@@ -1,4 +1,5 @@
-﻿using static PostgresAPI.Common.Enums;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using static PostgresAPI.Common.Enums;
 
 namespace PostgresAPI.Models
 {
@@ -8,5 +9,11 @@ namespace PostgresAPI.Models
         public string Name { get; set; }
         public double Price { get; set; }
         public MenuItemType MenuItemType { get; set; }
+
+        [ForeignKey("MenuId")]
+        public int MenuId { get; set; }
+        public Menu Menu { get; set; }
+
+        
     }
 }

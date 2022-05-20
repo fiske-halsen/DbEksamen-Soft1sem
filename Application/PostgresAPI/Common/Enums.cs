@@ -4,7 +4,7 @@
     {
         public enum RoleType
         {
-            User, Admin
+            Customer, Owner
         }
         public enum RestaurantType
         {
