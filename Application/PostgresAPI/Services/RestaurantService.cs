@@ -9,9 +9,9 @@ namespace PostgresAPI.Services
         public Task<IEnumerable<RestaurantDTO>> GetAllRestaurants();
         public Task<RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId);
 
-        public Task UpdateMenuItem(int menuItemId, MenuItemDTO menuItemDTO);
+        public Task<MenuItemDTO> UpdateMenuItem(int menuItemId, MenuItemDTO menuItemDTO);
         public Task<MenuItemDTO> CreateMenuItem(MenuItemDTO menuItemDTO, int restaurantId);
-        public Task DeleteMenuItem(int menuItemId);
+        public Task<MenuItemDTO> DeleteMenuItem(int menuItemId);
 
     }
     public class RestaurantService : IRestaurantService
@@ -28,9 +28,9 @@ namespace PostgresAPI.Services
             return await _restaurantRepository.CreateMenuItem(menuItemDTO, restaurantId);
         }
 
-        public async Task DeleteMenuItem(int menuItemId)
+        public async Task <MenuItemDTO> DeleteMenuItem( int menuItemId)
         {
-            throw new NotImplementedException();
+            return await _restaurantRepository.DeleteMenuItem(menuItemId);
         }
 
         public async Task<IEnumerable<RestaurantDTO>> GetAllRestaurants()
@@ -43,7 +43,7 @@ namespace PostgresAPI.Services
             return await _restaurantRepository.GetMenuFromRestaurantId(restaurantId);
         }
 
-        public async Task UpdateMenuItem(int menuItemId, MenuItemDTO menuItemDTO)
+        public async Task <MenuItemDTO> UpdateMenuItem(int menuItemId, MenuItemDTO menuItemDTO)
         {
             throw new NotImplementedException();
         }

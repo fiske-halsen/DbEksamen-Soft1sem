@@ -39,11 +39,11 @@ namespace PostgresAPI.Controllers
         {
             return await _restaurantService.CreateMenuItem(menuItemDTO, restaurantId);
         }
-        //[HttpDelete("/menu/{int:menuItemId}")]
-        //public IEnumerable<dynamic> DeleteMenuItemFromId(int menuItemId)
-        //{
-        //    return 1;
-        //}
+        [HttpDelete("/menu/menu-item/{menuItemId}")]
+        public async Task <MenuItemDTO> DeleteMenuItemFromId(int menuItemId)
+        {
+            return await _restaurantService.DeleteMenuItem(menuItemId);
+        }
 
     }
 }

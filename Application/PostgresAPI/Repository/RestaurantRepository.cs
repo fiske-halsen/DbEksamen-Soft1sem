@@ -14,7 +14,7 @@ namespace PostgresAPI.Repository
 
         public Task UpdateMenuItem(int menuItemId, MenuItemDTO menuItemDTO);
         public Task<MenuItemDTO> CreateMenuItem(MenuItemDTO menuItemDTO, int restaurantId);
-        public Task DeleteMenuItem(int menuItemId);
+        public Task <MenuItemDTO> DeleteMenuItem(int menuItemId);
     }
 
     public class RestaurantRepository : IRestaurantRepository
@@ -37,7 +37,7 @@ namespace PostgresAPI.Repository
         x => new RestaurantDTO()
         {
             RestaurantName = x.Name,
-            RestaurantType = x.ResturantType.RestaurantTypeChoice,
+            RestaurantType = x.ResturantType.RestaurantTypeChoice.ToString(),
             StreetName = x.Address.StreetName,
             City = x.Address.CityInfo.City,
             ZipCode = x.Address.CityInfo.ZipCode
@@ -81,17 +81,23 @@ namespace PostgresAPI.Repository
         /// </summary>
         /// <param name="menuItemId"></param>
         /// <returns></returns>
-        public async Task DeleteMenuItem(int menuItemId)
+        public async Task <MenuItemDTO> DeleteMenuItem(int menuItemId)
         {
             var menuItem =
                 await _applicationContext.
                 MenuItems.
-                Where(x => x.Id == menuItemId).
+                Where(x => x.Id == menuItemId).Include(x => x.MenuItemType).
                 FirstOrDefaultAsync();
-
+            MenuItemDTO tmpMenuItem = new MenuItemDTO
+            {
+                MenuItemName = menuItem.Name,
+                MenuItemType = menuItem.MenuItemType.MenuItemTypeChoice.ToString(),
+                Price = menuItem.Price
+                };
             _applicationContext.MenuItems.Remove(menuItem);
 
             await _applicationContext.SaveChangesAsync();
+            return tmpMenuItem;
         }
 
         /// <summary>
