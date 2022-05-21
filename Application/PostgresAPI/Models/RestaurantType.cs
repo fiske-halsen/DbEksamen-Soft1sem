@@ -6,6 +6,6 @@ namespace PostgresAPI.Models
     {
         public int Id { get; set; }
         public RestaurantTypeChoice RestaurantTypeChoice { get; set; }
-        public ICollection<Restaurant> Restaurants { get; set; }
+        public ICollection<Restaurant> Restaurants { get; set; } = new List<Restaurant>();
     }
 }

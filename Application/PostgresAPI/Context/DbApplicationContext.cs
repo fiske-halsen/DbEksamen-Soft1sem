@@ -16,6 +16,10 @@ namespace PostgresAPI.Context
         public DbSet<Address> Addresses { get; set; }
         public DbSet<CityInfo> CityInfos { get; set; }
 
+        public DbSet<MenuItemType> MenuItemTypes { get; set; }
+
+        public DbSet<RestaurantType> RestaurantTypes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

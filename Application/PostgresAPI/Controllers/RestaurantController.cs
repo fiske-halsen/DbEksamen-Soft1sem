@@ -34,11 +34,11 @@ namespace PostgresAPI.Controllers
         //{
         //    return 1;
         //}
-        //[HttpPost("/menu")]
-        //public IEnumerable<dynamic> AddMenuItem()
-        //{
-        //    return 1;
-        //}
+        [HttpPost("/{restaurantId}/menu/menu-item")]
+        public async Task<MenuItemDTO> AddMenuItem(int restaurantId, MenuItemDTO menuItemDTO)
+        {
+            return await _restaurantService.CreateMenuItem(menuItemDTO, restaurantId);
+        }
         //[HttpDelete("/menu/{int:menuItemId}")]
         //public IEnumerable<dynamic> DeleteMenuItemFromId(int menuItemId)
         //{

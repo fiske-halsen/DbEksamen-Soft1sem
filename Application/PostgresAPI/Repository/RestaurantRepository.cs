@@ -3,6 +3,7 @@ using PostgresAPI.Context;
 using PostgresAPI.DTO;
 using PostgresAPI.Models;
 using System.Linq.Expressions;
+using static PostgresAPI.Common.Enums;
 
 namespace PostgresAPI.Repository
 {
@@ -12,7 +13,7 @@ namespace PostgresAPI.Repository
         public Task<RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId);
 
         public Task UpdateMenuItem(int menuItemId, MenuItemDTO menuItemDTO);
-        public Task CreateMenuItem(MenuItemDTO menuItemDTO, int restaurantId);
+        public Task<MenuItemDTO> CreateMenuItem(MenuItemDTO menuItemDTO, int restaurantId);
         public Task DeleteMenuItem(int menuItemId);
     }
 
@@ -28,7 +29,7 @@ namespace PostgresAPI.Repository
            x => new MenuItemDTO()
            {
                MenuItemName = x.Name,
-               MenuItemType = x.MenuItemType.MenuItemTypeChoice,
+               MenuItemType = x.MenuItemType.MenuItemTypeChoice.ToString(),
                Price = x.Price
            };
 
@@ -43,9 +44,23 @@ namespace PostgresAPI.Repository
         };
 
 
-        public Task CreateMenuItem(MenuItemDTO menuItemDTO, int restaurantId)
+        public async Task <MenuItemDTO> CreateMenuItem(MenuItemDTO menuItemDTO, int restaurantId)
         {
-            throw new NotImplementedException();
+
+            var menu =
+                await _applicationContext.Menus.Where(x => x.Restaurant.Id == restaurantId).FirstOrDefaultAsync();
+            
+            
+
+            var menuItemType = await _applicationContext.MenuItemTypes.Where(x => x.MenuItemTypeChoice == (MenuItemTypeChoice)Enum.Parse(typeof(MenuItemTypeChoice), menuItemDTO.MenuItemType, true)).FirstOrDefaultAsync();
+            var menuItem = new MenuItem() { MenuItemType = menuItemType, Price = menuItemDTO.Price, Name = menuItemDTO.MenuItemName};
+            menu.MenuItems.Add(menuItem);
+            await _applicationContext.MenuItems.AddAsync(menuItem);
+            
+            await _applicationContext.SaveChangesAsync();
+            return new MenuItemDTO { MenuItemName = menuItem.Name, MenuItemType = menuItem.MenuItemType.MenuItemTypeChoice.ToString(), Price = menuItem.Price };
+
+
         }
 
         public Task DeleteMenuItem(int menuItemId)

@@ -7,6 +7,6 @@ namespace PostgresAPI.Models
     {
         public int Id { get; set; }
         public RoleType RoleType { get; set; }
-        public ICollection<User> User { get; set; }
+        public ICollection<User> User { get; set; } = new List<User>();
     }
 }
