@@ -10,6 +10,8 @@ namespace PostgresAPI.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        [ForeignKey("ResturantTypeId")]
+        public int ResturantTypeId { get; set; }
         public RestaurantType ResturantType { get; set; }
         [ForeignKey("AddressId")]
         public int AddressId { get; set; }

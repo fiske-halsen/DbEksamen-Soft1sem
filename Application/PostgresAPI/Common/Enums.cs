@@ -6,11 +6,11 @@
         {
             Customer, Owner
         }
-        public enum RestaurantType
+        public enum RestaurantTypeChoice
         {
             Pizza, Burger, Sushi, Indian, Thai, Mexican, Bagel, Sandwich, Cafe, Icecream, Italian, Salat, Dessert, Bar, Vegan, Chinese, Danish, Vietnamese
         }
-        public enum MenuItemType
+        public enum MenuItemTypeChoice
         {
             Drink, Food, Dessert, AddOn
         }

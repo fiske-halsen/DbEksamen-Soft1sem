@@ -8,12 +8,11 @@ namespace PostgresAPI.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public double Price { get; set; }
+        [ForeignKey("MenuItemTypeId")]
+        public int MenuItemTypeId { get; set; }
         public MenuItemType MenuItemType { get; set; }
-
         [ForeignKey("MenuId")]
         public int MenuId { get; set; }
         public Menu Menu { get; set; }
-
-        
     }
 }

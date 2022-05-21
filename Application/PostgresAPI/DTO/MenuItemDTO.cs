@@ -8,6 +8,6 @@ namespace PostgresAPI.DTO
 
         public double Price { get; set; }
 
-        public MenuItemType MenuItemType { get; set;}
+        public MenuItemTypeChoice MenuItemType { get; set;}
     }
 }

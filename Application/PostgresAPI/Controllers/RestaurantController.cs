@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PostgresAPI.DTO;
+using PostgresAPI.Models;
+using PostgresAPI.Services;
 
 namespace PostgresAPI.Controllers
 {
@@ -7,17 +10,24 @@ namespace PostgresAPI.Controllers
     [ApiController]
     public class RestaurantController : ControllerBase
     {
-        //[HttpGet("")]
-        //public IEnumerable<dynamic> GetAllRestaurants()
-        //{
-        //    return 1;
-        //}
-        //[HttpGet("/{int:restaurantId}/menu")]
-        //public IEnumerable<dynamic> GetMenuFromRestaurantId(int restaurantId)
-        //{
-            
-        //    return 1;
-        //}
+        private readonly IRestaurantService _restaurantService;
+        public RestaurantController(IRestaurantService restaurantService)
+        {
+            _restaurantService = restaurantService;
+        }
+
+        [HttpGet("")]
+        public async Task<IEnumerable<RestaurantDTO>> GetAllRestaurants()
+        {
+            return await _restaurantService.GetAllRestaurants();
+        }
+
+        [HttpGet("/{restaurantId}/menu")]
+        public async Task<RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId)
+        {
+            return await _restaurantService.GetMenuFromRestaurantId(restaurantId);
+        }
+
         ////TODO: only correct owner
         //[HttpPatch("/menu/{int:menuItemId}")]
         //public IEnumerable<dynamic> UpdateMenuItemFromId(int menuItemId)

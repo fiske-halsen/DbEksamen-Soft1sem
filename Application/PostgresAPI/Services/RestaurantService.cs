@@ -1,41 +1,49 @@
 ﻿using PostgresAPI.DTO;
 using PostgresAPI.Models;
+using PostgresAPI.Repository;
 
 namespace PostgresAPI.Services
 {
     public interface IRestaurantService
     {
-        public IEnumerable<Restaurant> GetAllRestaurants();
-        public IEnumerable<RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId);
+        public Task<IEnumerable<RestaurantDTO>> GetAllRestaurants();
+        public Task<RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId);
 
         public Task UpdateMenuItem(int menuItemId, MenuItemDTO menuItemDTO);
         public Task CreateMenuItem(MenuItemDTO menuItemDTO, int restaurantId);
         public Task DeleteMenuItem(int menuItemId);
-        
+
     }
     public class RestaurantService : IRestaurantService
     {
-        public Task CreateMenuItem(MenuItemDTO menuItemDTO, int restaurantId)
+        private readonly IRestaurantRepository _restaurantRepository;
+
+        public RestaurantService(IRestaurantRepository restaurantRepository)
+        {
+            _restaurantRepository = restaurantRepository;
+        }
+
+        public async Task CreateMenuItem(MenuItemDTO menuItemDTO, int restaurantId)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteMenuItem(int menuItemId)
+        public async Task DeleteMenuItem(int menuItemId)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Restaurant> GetAllRestaurants()
+        public async Task<IEnumerable<RestaurantDTO>> GetAllRestaurants()
         {
-            throw new NotImplementedException();
+            return await _restaurantRepository.GetAllRestaurants();
         }
 
-        public IEnumerable<RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId)
+        public async Task<RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId)
         {
-            throw new NotImplementedException();
+            return await _restaurantRepository.GetMenuFromRestaurantId(restaurantId);
         }
 
-        public Task UpdateMenuItem(int menuItemId, MenuItemDTO menuItemDTO)
+        public async Task UpdateMenuItem(int menuItemId, MenuItemDTO menuItemDTO)
         {
             throw new NotImplementedException();
         }
