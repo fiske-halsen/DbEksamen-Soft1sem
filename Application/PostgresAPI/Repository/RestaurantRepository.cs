@@ -10,11 +10,13 @@ namespace PostgresAPI.Repository
     public interface IRestaurantRepository
     {
         public Task<IEnumerable<RestaurantDTO>> GetAllRestaurants();
-        public Task<RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId);
+        public Task<RestaurantMenuDTO> GetMenuFromRestaurantId(Restaurant restaurant );
 
-        public Task UpdateMenuItem(int menuItemId, MenuItemDTO menuItemDTO);
+        public Task<MenuItemDTO> UpdateMenuItem(MenuItem menuItem, MenuItemDTO menuItemDTO);
         public Task<MenuItemDTO> CreateMenuItem(MenuItemDTO menuItemDTO, int restaurantId);
-        public Task <MenuItemDTO> DeleteMenuItem(int menuItemId);
+        public Task <MenuItemDTO> DeleteMenuItem(MenuItem menuItem);
+        public Task<Restaurant> GetRestaurantById(int restaurantId);
+        public Task<MenuItem> GetMenuItemFromId(int menuItemId);
     }
 
     public class RestaurantRepository : IRestaurantRepository
@@ -81,13 +83,9 @@ namespace PostgresAPI.Repository
         /// </summary>
         /// <param name="menuItemId"></param>
         /// <returns></returns>
-        public async Task <MenuItemDTO> DeleteMenuItem(int menuItemId)
+        public async Task <MenuItemDTO> DeleteMenuItem(MenuItem menuItem)
         {
-            var menuItem =
-                await _applicationContext.
-                MenuItems.
-                Where(x => x.Id == menuItemId).Include(x => x.MenuItemType).
-                FirstOrDefaultAsync();
+            
             MenuItemDTO tmpMenuItem = new MenuItemDTO
             {
                 MenuItemName = menuItem.Name,
@@ -112,30 +110,44 @@ namespace PostgresAPI.Repository
                 Select(AsRestaurantDto).
                 ToListAsync();
         }
+        public async Task<MenuItem> GetMenuItemFromId(int menuItemId)
+        {
+            var menuItem =
+               await _applicationContext.
+               MenuItems.
+               Where(x => x.Id == menuItemId).Include(x => x.MenuItemType).
+               FirstOrDefaultAsync();
+            return menuItem;
+        }
 
-        /// <summary>
-        /// Gets the restaurant menu by restaurant id
-        /// </summary>
-        /// <param name="restaurantId"></param>
-        /// <returns></returns>
-        public async Task<RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId)
+        public async Task <Restaurant> GetRestaurantById(int restaurantId)
         {
             var resturant =
                 await _applicationContext.
                 Restaurants.
                 Where(x => x.Id == restaurantId).
                 FirstOrDefaultAsync();
+            return resturant;
+        }
+        /// <summary>
+        /// Gets the restaurant menu by restaurant id
+        /// </summary>
+        /// <param name="restaurantId"></param>
+        /// <returns></returns>
+        public async Task<RestaurantMenuDTO> GetMenuFromRestaurantId(Restaurant restaurant)
+        {
+            
 
             var menuItems =
                 await _applicationContext.
                 MenuItems.
-                Where(x => x.Menu.Restaurant.Id == restaurantId).
+                Where(x => x.Menu.Restaurant.Id == restaurant.Id).
                 Select(AsMenuItemDto)
                .ToListAsync();
 
             return new RestaurantMenuDTO()
             {
-                RestaurantName = resturant.Name,
+                RestaurantName = restaurant.Name,
                 Menu = menuItems
             };
         }
@@ -146,22 +158,21 @@ namespace PostgresAPI.Repository
         /// <param name="menuItemId"></param>
         /// <param name="menuItemDTO"></param>
         /// <returns></returns>
-        public async Task UpdateMenuItem(int menuItemId, MenuItemDTO menuItemDTO)
+        public async Task<MenuItemDTO> UpdateMenuItem(MenuItem menuItem, MenuItemDTO menuItemDTO)
         {
-            var menuItem =
-               await _applicationContext.
-               MenuItems.
-               Where(x => x.Id == menuItemId).
-               FirstOrDefaultAsync();
+            
 
             menuItem.Price = menuItemDTO.Price;
             menuItem.Name = menuItemDTO.MenuItemName;
-            menuItem.MenuItemType = new MenuItemType() 
-            { 
-                MenuItemTypeChoice = (MenuItemTypeChoice)Enum.Parse(typeof(MenuItemTypeChoice), menuItemDTO.MenuItemType, true)  
-            };
+            menuItem.MenuItemType = menuItem.MenuItemType;
 
             await _applicationContext.SaveChangesAsync();
+            return new MenuItemDTO
+            {
+                MenuItemName = menuItem.Name,
+                MenuItemType = menuItem.MenuItemType.MenuItemTypeChoice.ToString(),
+                Price = menuItem.Price
+            };
         }
     }
 }

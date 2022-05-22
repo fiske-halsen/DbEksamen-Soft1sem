@@ -28,9 +28,24 @@ namespace PostgresAPI.Services
             return await _restaurantRepository.CreateMenuItem(menuItemDTO, restaurantId);
         }
 
-        public async Task <MenuItemDTO> DeleteMenuItem( int menuItemId)
+        public async Task <MenuItemDTO> DeleteMenuItem(int menuItemId)
         {
-            return await _restaurantRepository.DeleteMenuItem(menuItemId);
+            var menuItem = await _restaurantRepository.GetMenuItemFromId(menuItemId);
+            if(menuItem == null)
+            {
+                throw new Exception("No Menu Item With Given ID");
+            }
+            return await _restaurantRepository.DeleteMenuItem(menuItem);
+        }
+        public async Task<MenuItemDTO> UpdateMenuItem(int menuItemId, MenuItemDTO menuItemDTO)
+        {
+            var menuItem = await _restaurantRepository.GetMenuItemFromId(menuItemId);
+            if(menuItem == null)
+            {
+                throw new Exception("No Menu Item With Given ID");
+            }
+
+            return await _restaurantRepository.UpdateMenuItem(menuItem, menuItemDTO);
         }
 
         public async Task<IEnumerable<RestaurantDTO>> GetAllRestaurants()
@@ -40,12 +55,15 @@ namespace PostgresAPI.Services
 
         public async Task<RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId)
         {
-            return await _restaurantRepository.GetMenuFromRestaurantId(restaurantId);
+
+            var restaurant =  await _restaurantRepository.GetRestaurantById(restaurantId);
+            if (restaurant == null)
+            {
+                throw new Exception("No Restaurant With Given ID");
+            }
+            return await _restaurantRepository.GetMenuFromRestaurantId(restaurant);
         }
 
-        public async Task <MenuItemDTO> UpdateMenuItem(int menuItemId, MenuItemDTO menuItemDTO)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

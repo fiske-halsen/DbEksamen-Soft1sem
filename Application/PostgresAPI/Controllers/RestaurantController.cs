@@ -28,12 +28,12 @@ namespace PostgresAPI.Controllers
             return await _restaurantService.GetMenuFromRestaurantId(restaurantId);
         }
 
-        ////TODO: only correct owner
-        //[HttpPatch("/menu/{int:menuItemId}")]
-        //public IEnumerable<dynamic> UpdateMenuItemFromId(int menuItemId)
-        //{
-        //    return 1;
-        //}
+
+        [HttpPatch("/menu/menu-item/{menuItemId}")]
+        public async Task<MenuItemDTO> UpdateMenuItemFromId(int menuItemId, MenuItemDTO menuItemDTO)
+        {
+            return await _restaurantService.UpdateMenuItem(menuItemId, menuItemDTO);
+        }
         [HttpPost("/{restaurantId}/menu/menu-item")]
         public async Task<MenuItemDTO> AddMenuItem(int restaurantId, MenuItemDTO menuItemDTO)
         {
