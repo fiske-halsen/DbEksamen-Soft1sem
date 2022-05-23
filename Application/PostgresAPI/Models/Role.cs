@@ -1,4 +1,5 @@
-﻿using static PostgresAPI.Common.Enums;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using static PostgresAPI.Common.Enums;
 
 namespace PostgresAPI.Models
 {
@@ -6,5 +7,6 @@ namespace PostgresAPI.Models
     {
         public int Id { get; set; }
         public RoleType RoleType { get; set; }
+        public ICollection<User> User { get; set; } = new List<User>();
     }
 }
