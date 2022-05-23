@@ -28,7 +28,14 @@ namespace MongoAPI
         public async Task<Order?> GetOrder(string id) =>
             await _ordersCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
-        public async Task CreateOrder(Order newOrder) =>
-            await _ordersCollection.InsertOneAsync(newOrder);
+        public async Task CreateOrder(OrderDTO orderDTO)
+        {
+            var order = new Order
+            {
+
+            };
+
+            await _ordersCollection.InsertOneAsync(order);
+        }
     }
 }
