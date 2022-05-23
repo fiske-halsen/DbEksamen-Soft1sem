@@ -10,11 +10,10 @@ namespace PostgresAPI.Repository
     public interface IRestaurantRepository
     {
         public Task<IEnumerable<RestaurantDTO>> GetAllRestaurants();
-        public Task<RestaurantMenuDTO> GetMenuFromRestaurantId(Restaurant restaurant );
-
+        public Task<RestaurantMenuDTO> GetMenuFromRestaurantId(Restaurant restaurant);
         public Task<MenuItemDTO> UpdateMenuItem(MenuItem menuItem, MenuItemDTO menuItemDTO);
         public Task<MenuItemDTO> CreateMenuItem(MenuItemDTO menuItemDTO, int restaurantId);
-        public Task <MenuItemDTO> DeleteMenuItem(MenuItem menuItem);
+        public Task<MenuItemDTO> DeleteMenuItem(MenuItem menuItem);
         public Task<Restaurant> GetRestaurantById(int restaurantId);
         public Task<MenuItem> GetMenuItemFromId(int menuItemId);
     }
@@ -83,15 +82,15 @@ namespace PostgresAPI.Repository
         /// </summary>
         /// <param name="menuItemId"></param>
         /// <returns></returns>
-        public async Task <MenuItemDTO> DeleteMenuItem(MenuItem menuItem)
+        public async Task<MenuItemDTO> DeleteMenuItem(MenuItem menuItem)
         {
-            
+
             MenuItemDTO tmpMenuItem = new MenuItemDTO
             {
                 MenuItemName = menuItem.Name,
                 MenuItemType = menuItem.MenuItemType.MenuItemTypeChoice.ToString(),
                 Price = menuItem.Price
-                };
+            };
             _applicationContext.MenuItems.Remove(menuItem);
 
             await _applicationContext.SaveChangesAsync();
@@ -114,13 +113,14 @@ namespace PostgresAPI.Repository
         {
             var menuItem =
                await _applicationContext.
-               MenuItems.
-               Where(x => x.Id == menuItemId).Include(x => x.MenuItemType).
-               FirstOrDefaultAsync();
+               MenuItems
+             .Include(x => x.MenuItemType).
+            FirstOrDefaultAsync(x => x.Id == menuItemId);
+
             return menuItem;
         }
 
-        public async Task <Restaurant> GetRestaurantById(int restaurantId)
+        public async Task<Restaurant> GetRestaurantById(int restaurantId)
         {
             var resturant =
                 await _applicationContext.
@@ -136,8 +136,6 @@ namespace PostgresAPI.Repository
         /// <returns></returns>
         public async Task<RestaurantMenuDTO> GetMenuFromRestaurantId(Restaurant restaurant)
         {
-            
-
             var menuItems =
                 await _applicationContext.
                 MenuItems.
@@ -160,7 +158,7 @@ namespace PostgresAPI.Repository
         /// <returns></returns>
         public async Task<MenuItemDTO> UpdateMenuItem(MenuItem menuItem, MenuItemDTO menuItemDTO)
         {
-            
+
 
             menuItem.Price = menuItemDTO.Price;
             menuItem.Name = menuItemDTO.MenuItemName;

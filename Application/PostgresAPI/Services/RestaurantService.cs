@@ -1,6 +1,7 @@
 ﻿using PostgresAPI.DTO;
 using PostgresAPI.Models;
 using PostgresAPI.Repository;
+using RestaurantMicroservice.ErrorHandling;
 
 namespace PostgresAPI.Services
 {
@@ -23,26 +24,26 @@ namespace PostgresAPI.Services
             _restaurantRepository = restaurantRepository;
         }
 
-        public async Task <MenuItemDTO> CreateMenuItem(MenuItemDTO menuItemDTO, int restaurantId)
+        public async Task<MenuItemDTO> CreateMenuItem(MenuItemDTO menuItemDTO, int restaurantId)
         {
             return await _restaurantRepository.CreateMenuItem(menuItemDTO, restaurantId);
         }
 
-        public async Task <MenuItemDTO> DeleteMenuItem(int menuItemId)
+        public async Task<MenuItemDTO> DeleteMenuItem(int menuItemId)
         {
             var menuItem = await _restaurantRepository.GetMenuItemFromId(menuItemId);
-            if(menuItem == null)
+            if (menuItem == null)
             {
-                throw new Exception("No Menu Item With Given ID");
+                throw new HttpStatusException(StatusCodes.Status400BadRequest, "No menu item with the given id");
             }
             return await _restaurantRepository.DeleteMenuItem(menuItem);
         }
         public async Task<MenuItemDTO> UpdateMenuItem(int menuItemId, MenuItemDTO menuItemDTO)
         {
             var menuItem = await _restaurantRepository.GetMenuItemFromId(menuItemId);
-            if(menuItem == null)
+            if (menuItem == null)
             {
-                throw new Exception("No Menu Item With Given ID");
+                throw new HttpStatusException(StatusCodes.Status400BadRequest, "No Menu Item With Given ID");
             }
 
             return await _restaurantRepository.UpdateMenuItem(menuItem, menuItemDTO);
@@ -55,15 +56,12 @@ namespace PostgresAPI.Services
 
         public async Task<RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId)
         {
-
-            var restaurant =  await _restaurantRepository.GetRestaurantById(restaurantId);
+            var restaurant = await _restaurantRepository.GetRestaurantById(restaurantId);
             if (restaurant == null)
             {
-                throw new Exception("No Restaurant With Given ID");
+                throw new HttpStatusException(StatusCodes.Status400BadRequest, "No Restaurant With Given ID");
             }
             return await _restaurantRepository.GetMenuFromRestaurantId(restaurant);
         }
-
-        
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PostgresAPI.DTO;
 using PostgresAPI.Models;
@@ -7,6 +8,7 @@ using PostgresAPI.Services;
 namespace PostgresAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class RestaurantController : ControllerBase
     {
@@ -27,8 +29,6 @@ namespace PostgresAPI.Controllers
         {
             return await _restaurantService.GetMenuFromRestaurantId(restaurantId);
         }
-
-
         [HttpPatch("/menu/menu-item/{menuItemId}")]
         public async Task<MenuItemDTO> UpdateMenuItemFromId(int menuItemId, MenuItemDTO menuItemDTO)
         {
