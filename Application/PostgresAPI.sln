@@ -5,7 +5,11 @@ VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantMicroservice", "PostgresAPI\RestaurantMicroservice.csproj", "{E211D4BA-0756-4051-91F9-32079A19AE33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer", "IdentityServer\IdentityServer.csproj", "{F1F41498-C630-479A-92DA-33A3A5492E2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdentityServer\IdentityServer.csproj", "{F1F41498-C630-479A-92DA-33A3A5492E2C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoAPI", "MongoAPI\MongoAPI.csproj", "{65F5AB88-ACBC-4327-8738-17A4B1B4795C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neo4JAPI", "Neo4JAPI\Neo4JAPI.csproj", "{4134A664-B317-40B6-A853-74095AA8707B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{F1F41498-C630-479A-92DA-33A3A5492E2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1F41498-C630-479A-92DA-33A3A5492E2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1F41498-C630-479A-92DA-33A3A5492E2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65F5AB88-ACBC-4327-8738-17A4B1B4795C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65F5AB88-ACBC-4327-8738-17A4B1B4795C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65F5AB88-ACBC-4327-8738-17A4B1B4795C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65F5AB88-ACBC-4327-8738-17A4B1B4795C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4134A664-B317-40B6-A853-74095AA8707B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4134A664-B317-40B6-A853-74095AA8707B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4134A664-B317-40B6-A853-74095AA8707B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4134A664-B317-40B6-A853-74095AA8707B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
