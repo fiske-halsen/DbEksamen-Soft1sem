@@ -1,4 +1,4 @@
-namespace PostgresAPI
+namespace IdentityServer
 {
     public class WeatherForecast
     {
