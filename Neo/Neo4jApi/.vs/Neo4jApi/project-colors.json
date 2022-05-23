@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "8de293d9-17d2-4833-b5bc-eecb1ac9c55f": {
+      "ProjectGuid": "8de293d9-17d2-4833-b5bc-eecb1ac9c55f",
+      "DisplayName": "Neo4jApi",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
