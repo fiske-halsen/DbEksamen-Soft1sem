@@ -4,7 +4,6 @@ namespace MongoAPI
 {
     public class OrderDTO
     {
-        public string Id { get; set; }
         public string RestaurantName { get; set; }
         public List<ItemDTO> Items { get; set; } = new List<ItemDTO>();
         public string Price { get; set; }
