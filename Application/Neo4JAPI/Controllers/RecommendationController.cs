@@ -24,6 +24,6 @@ public class RecommendationController : ControllerBase
     [HttpPost("/restaurant-type-relation/{restaurantName}/{restaurantType}")]
     public async Task AddRestaurantTypeRelation(string restaurantName, string restaurantType)
     {
-        //await _recommendationService.CreateNode(restaurantName);
+        await _recommendationService.AddRestaurantTypeRelation(restaurantName, restaurantType);
     }
 }

@@ -6,6 +6,7 @@ namespace Neo4JAPI.Services
     public interface IRecommendationService
     {
         public Task AddCustomerRestaurantRelation(string restaurantName, string customerName);
+        public Task AddRestaurantTypeRelation(string restaurantName, string restaurantType);
     }
     public class RecommendationService : IRecommendationService
     {
@@ -20,6 +21,11 @@ namespace Neo4JAPI.Services
         public async Task AddCustomerRestaurantRelation(string restaurantName, string customerName)
         {
             await _recommendationRepository.AddCustomerRestaurantRelation(restaurantName, customerName);
+        }
+
+        public async Task AddRestaurantTypeRelation(string restaurantName, string restaurantType)
+        {
+            await _recommendationRepository.AddRestaurantTypeRelation(restaurantName, restaurantType);
         }
     }
 }

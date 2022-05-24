@@ -6,6 +6,7 @@ namespace Neo4JAPI.Repository
     public interface IRecommendationRepository
     {
         public Task AddCustomerRestaurantRelation(string restaurantName, string customerName);
+        public Task AddRestaurantTypeRelation(string restaurantName, string restaurantType);
     }
     public class RecommendationRepository : IRecommendationRepository
     {
@@ -37,6 +38,26 @@ namespace Neo4JAPI.Repository
             var session = this._driver.AsyncSession();
             var result = await session.WriteTransactionAsync(tx => tx.RunAsync(statementText.ToString(), statementParameters));
             
+        }
+
+        public async Task AddRestaurantTypeRelation(string restaurantName, string restaurantType)
+        {
+            var statementText = new StringBuilder();
+            statementText.Append("MERGE (r:Restaurant {name: $rName})");
+            statementText.Append("MERGE (t:R_Type {type: $rType})");
+            statementText.Append("MERGE (r)-[:TYPE_OF]->(t)");
+            
+
+            var statementParameters = new Dictionary<string, object>
+        {
+
+            {"rName", restaurantName },
+            {"rType", restaurantType }
+
+        };
+
+            var session = this._driver.AsyncSession();
+            var result = await session.WriteTransactionAsync(tx => tx.RunAsync(statementText.ToString(), statementParameters));
         }
     }
 }
