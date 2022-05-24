@@ -50,11 +50,12 @@ namespace PostgresAPI.Context
                 new Role { Id = 1, RoleType = Common.Enums.RoleType.Customer },
                 new Role { Id = 2, RoleType = Common.Enums.RoleType.Owner }
                 );
-            builder.Entity<User>().HasData(
-                new User { Id = 1, Email = "Niels@Andersen.dk", Name = "Niels", LastName = "Andersen", Password = "1234", PhoneNumber = "44334455", RoleId = 1 },
-                new User { Id = 2, Email = "Restaurant@Ejer.dk", Name = "Restaurant", LastName = "Ejer", Password = "1234", PhoneNumber = "44334422", RoleId = 2 },
-                new User { Id = 3, Email = "Restaurant@Ejer2.dk", Name = "Restaurant2", LastName = "Ejer2", Password = "1234", PhoneNumber = "44334432", RoleId = 2 }
 
+
+            builder.Entity<User>().HasData(
+                new User { Id = 1, Email = "Niels@Andersen.dk", Name = "Niels", LastName = "Andersen", Password = BCrypt.Net.BCrypt.HashPassword("1234"), PhoneNumber = "44334455", RoleId = 1 },
+                new User { Id = 2, Email = "Restaurant@Ejer.dk", Name = "Restaurant", LastName = "Ejer", Password = BCrypt.Net.BCrypt.HashPassword("1234"), PhoneNumber = "44334422", RoleId = 2 },
+                new User { Id = 3, Email = "Restaurant@Ejer2.dk", Name = "Restaurant2", LastName = "Ejer2", Password = BCrypt.Net.BCrypt.HashPassword("1234"), PhoneNumber = "44334432", RoleId = 2 }
                 );
             builder.Entity<CityInfo>().HasData(
                 new CityInfo { Id = 1, City = "Staden", ZipCode = "2500" }
