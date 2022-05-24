@@ -2,6 +2,8 @@ using IdentityServer.Context;
 using IdentityServer.IdentityConfig;
 using IdentityServer.Repository;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
+using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,8 @@ builder.Services.AddIdentityServer()
 
 builder.Services.AddDbContext<DbApplicationContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddTransient<IDbConnection>((sp) => new NpgsqlConnection(configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 

@@ -17,6 +17,8 @@ namespace IdentityServer.IdentityConfig
         {
             var userName = context.UserName;
             var password = context.Password;
+            var usre2 = _authRepository.GetUserById(1).Result;
+
             var user = _authRepository.GetUserByUsername(userName).Result;
 
             // Need to figure out with bcrypt when doing register
