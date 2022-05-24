@@ -1,9 +1,12 @@
-﻿namespace MongoAPI
+﻿using MongoAPI.DTO;
+
+namespace MongoAPI
 {
     public class OrderDTO
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public string Id { get; set; }
+        public string RestaurantName { get; set; }
+        public List<ItemDTO> Items { get; set; } = new List<ItemDTO>();
         public string Price { get; set; }
         public string CustomerName { get; set; }
     }

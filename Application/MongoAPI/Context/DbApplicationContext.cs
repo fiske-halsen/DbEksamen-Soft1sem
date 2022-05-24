@@ -9,8 +9,8 @@ namespace MongoAPI.Context
     public class DbApplicationContext
     {
         public string ConnectionString { get; set; } = null!;
-        public string MyDatabase { get; set; } = null!;
-        public string MyCollection { get; set; } = null!;
+        public string DatabaseName { get; set; } = null!;
+        public string CollectionName { get; set; } = null!;
 
         public void Migration(IConfiguration configuration)
         {
