@@ -18,22 +18,22 @@ namespace IdentityServer.IdentityConfig
             try
             {
                 var subject = context.Subject.Claims.ToList().Find(s => s.Type == "sub").Value;
+                var userId = Int32.Parse(subject);
 
-                Debug.WriteLine("sssss " + subject);
-
-                var user = await _authRepository.GetUserById(1);
-                
+                var user = await _authRepository.GetUserById(userId);
+                var role = await _authRepository.GetUserRole(userId);
+            
                 if (subject == null)
                 {
                     return;
                 }
                 var claims = new List<Claim>
                 {
-                new Claim("Role", user.Role.RoleType.ToString()),
+                new Claim("Role", role.RoleType),
+                new Claim("Email", user.Email),
                 };
 
                 context.IssuedClaims = claims;
-
             }
             catch (Exception e)
             {

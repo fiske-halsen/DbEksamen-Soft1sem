@@ -1,46 +1,54 @@
-﻿using IdentityServer.Context;
-using Microsoft.EntityFrameworkCore;
-using PostgresAPI.Models;
+﻿using Dapper;
+using IdentityServer.Context;
+using IdentityServer.Models;
+using System.Data;
 
 namespace IdentityServer.Repository
 {
     public interface IUserRepository
     {
         Task<User> GetUserById(int userÍd);
-        Task<User> GetUserByUsername(string userName);
+        Task<User> GetUserByUsername(string email);
         Task<Role> GetUserRole(int userId);
     }
     public class UserRepository : IUserRepository
     {
         private readonly DbApplicationContext _applicationContext;
-        public UserRepository(DbApplicationContext applicationContext)
+        private readonly IDbConnection _connection;
+        public UserRepository(DbApplicationContext applicationContext, IDbConnection connection)
         {
             _applicationContext = applicationContext;
+            _connection = connection;
         }
         public async Task<User> GetUserById(int userId)
         {
-            return await _applicationContext.
-                Users.
-                Include(u => u.Role).
-                Where(u => u.Id == userId).
-                FirstOrDefaultAsync();
+            return await _connection.QueryFirstOrDefaultAsync<User>(
+                "SELECT " +
+                "u.\"Id\", " +
+                "u.\"Name\", " +
+                "u.\"Email\", " +
+                "u.\"Password\" " +
+                " FROM \"Users\" AS u " +
+                "WHERE u.\"Id\" = @Id", new { Id = userId });
         }
-        public async Task<User> GetUserByUsername(string userName)
+        public async Task<User> GetUserByUsername(string email)
         {
-            return await _applicationContext.
-                Users.
-                Where(u => u.Name == userName).
-                FirstOrDefaultAsync();
+            return await _connection.QueryFirstOrDefaultAsync<User>(
+                "SELECT " +
+                "u.\"Id\", " +
+                "u.\"Name\", " +
+                "u.\"Email\", " +
+                "u.\"Password\" " +
+                " FROM \"Users\" AS u " +
+                "WHERE u.\"Email\" = @Email", new { Email = email });
         }
         public async Task<Role> GetUserRole(int userId)
         {
-            var user = await _applicationContext.
-                Users.
-                Include(u => u.Role).
-                Where(u => u.Id == userId).
-                FirstOrDefaultAsync();
-
-            return user.Role;
+            return await _connection.QueryFirstOrDefaultAsync<Role>(
+                "SELECT u.\"Id\", " +
+                "r.\"RoleType\" FROM \"Users\" AS u " +
+                "INNER JOIN \"Roles\" AS r ON u.\"RoleId\" = u.\"Id\"" +
+                " WHERE u.\"Id\" = @Id", new { Id = userId });
         }
     }
 }
