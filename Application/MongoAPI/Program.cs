@@ -1,23 +1,26 @@
 using MongoAPI;
 using MongoAPI.Context;
+using MongoAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 builder.Services.Configure<DbApplicationContext>(
     builder.Configuration.GetSection("OrderDatabase"));
 
-builder.Services.AddSingleton<OrderRepository>();
+builder.Services.AddAuthorization();
 
-DbApplicationContext appContext = new DbApplicationContext();
-appContext.Migration(builder.Configuration);
+//-------------------------- Services for dependency injection ----------------//'
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//Migration things that doesn't work yet
+//DbApplicationContext appContext = new DbApplicationContext();
+//appContext.Migration(builder.Configuration);
 
 var app = builder.Build();
 
@@ -29,8 +32,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 app.MapControllers();
 

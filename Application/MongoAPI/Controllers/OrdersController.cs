@@ -1,71 +1,35 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MongoAPI.Models;
 using MongoAPI.Services;
 
 namespace MongoAPI.Controllers
 {
-    public class OrderController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class OrderController : ControllerBase
     {
-        private readonly OrderService _orderService;
+        private readonly IOrderService _orderService;
 
-        public OrderController(OrderService orderService) =>
+        public OrderController(IOrderService orderService) =>
             _orderService = orderService;
 
-        [HttpGet]
-        public async Task<List<Order>> Get() =>
-            await _orderService.GetAsync();
-
-        [HttpGet("{id:length(24)}")]
-        public async Task<ActionResult<Book>> Get(string id)
+        [HttpGet("")]
+        public async Task<ICollection<OrderDTO>> GetAllOrders()
         {
-            var book = await _booksService.GetAsync(id);
-
-            if (book is null)
-            {
-                return NotFound();
-            }
-
-            return book;
+            return await _orderService.GetAllOrders();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post(Book newBook)
+        [HttpGet("order/{orderId}")]
+        public async Task<ActionResult<OrderDTO>> GetOrder(string id)
         {
-            await _booksService.CreateAsync(newBook);
-
-            return CreatedAtAction(nameof(Get), new { id = newBook.Id }, newBook);
+            return await _orderService.GetOrder(id);
         }
 
-        [HttpPut("{id:length(24)}")]
-        public async Task<IActionResult> Update(string id, Book updatedBook)
+        [HttpPost("")]
+        public async Task<OrderDTO> CreateOrder(OrderDTO orderDTO)
         {
-            var book = await _booksService.GetAsync(id);
-
-            if (book is null)
-            {
-                return NotFound();
-            }
-
-            updatedBook.Id = book.Id;
-
-            await _booksService.UpdateAsync(id, updatedBook);
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id:length(24)}")]
-        public async Task<IActionResult> Delete(string id)
-        {
-            var book = await _booksService.GetAsync(id);
-
-            if (book is null)
-            {
-                return NotFound();
-            }
-
-            await _booksService.RemoveAsync(id);
-
-            return NoContent();
+            return await _orderService.CreateOrder(orderDTO);
         }
     }
 }
