@@ -1,10 +1,13 @@
-﻿namespace MongoAPI.Services
+﻿using MongoAPI.Models;
+using MongoDB.Bson;
+
+namespace MongoAPI.Services
 {
     public interface IOrderService
     {
-        public Task<ICollection<OrderDTO>> GetAllOrders();
-        public Task<OrderDTO> GetOrder(string orderId);
-        public Task<OrderDTO> CreateOrder(OrderDTO orderDTO);
+        public Task<List<Order>> GetAllOrders();
+        public Task<OrderDTO> GetOrder(ObjectId orderId);
+        public Task<Order> CreateOrder(Order order);
     }
     public class OrderService : IOrderService
     {
@@ -15,19 +18,19 @@
             _orderRepository = orderRepository;
         }
 
-        public async Task<ICollection<OrderDTO>> GetAllOrders()
+        public async Task<List<Order>> GetAllOrders()
         {
             return await _orderRepository.GetAllOrders();
         }
 
-        public async Task<OrderDTO> GetOrder(string orderId)
+        public async Task<OrderDTO> GetOrder(ObjectId orderId)
         {
             return await _orderRepository.GetOrder(orderId);
         }
 
-        public async Task<OrderDTO> CreateOrder(OrderDTO orderDTO)
+        public async Task<Order> CreateOrder(Order order)
         {
-            return await CreateOrder(orderDTO);
+            return await _orderRepository.CreateOrder(order);
         }
     }
 }

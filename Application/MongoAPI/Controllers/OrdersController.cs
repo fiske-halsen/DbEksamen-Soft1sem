@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MongoAPI.Models;
 using MongoAPI.Services;
+using MongoDB.Bson;
 
 namespace MongoAPI.Controllers
 {
@@ -15,21 +16,21 @@ namespace MongoAPI.Controllers
             _orderService = orderService;
 
         [HttpGet("")]
-        public async Task<ICollection<OrderDTO>> GetAllOrders()
+        public async Task<List<Order>> GetAllOrders()
         {
             return await _orderService.GetAllOrders();
         }
 
         [HttpGet("order/{orderId}")]
-        public async Task<ActionResult<OrderDTO>> GetOrder(string id)
+        public async Task<ActionResult<OrderDTO>> GetOrder(ObjectId id)
         {
             return await _orderService.GetOrder(id);
         }
 
         [HttpPost("")]
-        public async Task<OrderDTO> CreateOrder(OrderDTO orderDTO)
+        public async Task<Order> CreateOrder(Order order)
         {
-            return await _orderService.CreateOrder(orderDTO);
+            return await _orderService.CreateOrder(order);
         }
     }
 }

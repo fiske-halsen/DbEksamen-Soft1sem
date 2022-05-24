@@ -2,6 +2,7 @@
 using MongoAPI.Context;
 using MongoAPI.DTO;
 using MongoAPI.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Linq;
 using System.Linq.Expressions;
@@ -10,9 +11,9 @@ namespace MongoAPI
 {
     public interface IOrderRepository
     {
-        public Task<ICollection<OrderDTO>> GetAllOrders();
-        public Task<OrderDTO?> GetOrder(string id);
-        public Task<OrderDTO> CreateOrder(OrderDTO orderDTO);
+        public Task<List<Order>> GetAllOrders();
+        public Task<OrderDTO?> GetOrder(ObjectId id);
+        public Task<Order> CreateOrder(Order order);
     }
 
     public class OrderRepository : IOrderRepository
@@ -42,35 +43,29 @@ namespace MongoAPI
         private static readonly Expression<Func<Order, OrderDTO>> AsOrderDTO =
             x => new OrderDTO()
             {
-                Id = x.Id,
                 RestaurantName = x.RestaurantName,
                 Items = (List<ItemDTO>)x.Items,
                 Price = x.Price,
                 CustomerName = x.CustomerName
             };
 
-        public async Task<ICollection<OrderDTO>> GetAllOrders()
-        {
-            return (ICollection<OrderDTO>)await _ordersCollection.FindAsync(x => true);
-        }
-
-        public async Task<OrderDTO?> GetOrder(string id)
+        public async Task<OrderDTO?> GetOrder(ObjectId id)
         {
             return (OrderDTO?)await _ordersCollection.FindAsync(x => x.Id == id);
         }
 
-        public async Task<OrderDTO> CreateOrder(OrderDTO orderDTO)
+        public async Task<Order> CreateOrder(Order order)
         {
-            await _ordersCollection.InsertOneAsync(new Order()
-            {
-                Id = orderDTO.Id,
-                CustomerName = orderDTO.CustomerName,
-                Items = (ICollection<Item>)orderDTO.Items,
-                Price = orderDTO.Price,
-                RestaurantName = orderDTO.RestaurantName
-            });
+            await _ordersCollection.InsertOneAsync(order);
 
-            return orderDTO;
+            return order;
+        }
+
+        public async Task<List<Order>> GetAllOrders()
+        {
+            return await _ordersCollection.Find(x => true).ToListAsync();
+
+            //return _ordersCollection.AsQueryable().Select(AsOrderDTO).ToList();
         }
     }
 }
