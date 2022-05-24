@@ -17,14 +17,12 @@ namespace IdentityServer.IdentityConfig
         {
             var userName = context.UserName;
             var password = context.Password;
-            var usre2 = _authRepository.GetUserById(1).Result;
 
             var user = _authRepository.GetUserByUsername(userName).Result;
 
-            // Need to figure out with bcrypt when doing register
-            // bool isEqual = BCrypt.Net.BCrypt.Verify(password, user.Password);
+            bool isEqual = BCrypt.Net.BCrypt.Verify(password, user.Password);
 
-            if (user != null && user.Password.Equals(password))
+            if (user != null && isEqual)
             {
                 context.Result = new GrantValidationResult(subject: user.Id.ToString(), authenticationMethod: "password");
                 return Task.FromResult(context.Result);
