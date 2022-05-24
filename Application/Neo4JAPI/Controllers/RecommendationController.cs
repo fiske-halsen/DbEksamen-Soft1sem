@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Neo4j.Driver;
 using Neo4JAPI.Services;
 
 [Route("api/[controller]")]
@@ -26,4 +27,10 @@ public class RecommendationController : ControllerBase
     {
         await _recommendationService.AddRestaurantTypeRelation(restaurantName, restaurantType);
     }
+    [HttpGet("/favorite-restaurant-type/{customerName}")]
+    public async Task <string> FindFavoriteRestaurantFromCustomerName(string customerName)
+    {
+       return await _recommendationService.FindFavoriteRestaurantFromCustomerName(customerName);
+    }
+
 }
