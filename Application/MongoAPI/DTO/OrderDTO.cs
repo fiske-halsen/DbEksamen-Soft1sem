@@ -6,7 +6,7 @@ namespace MongoAPI
     {
         public string RestaurantName { get; set; }
         public List<ItemDTO> Items { get; set; } = new List<ItemDTO>();
-        public string Price { get; set; }
+        public double TotalPrice { get; set; }
         public string CustomerName { get; set; }
     }
 }

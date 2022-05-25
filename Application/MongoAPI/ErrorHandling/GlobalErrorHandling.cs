@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using Common.ErrorHandling;
+using Microsoft.AspNetCore.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;

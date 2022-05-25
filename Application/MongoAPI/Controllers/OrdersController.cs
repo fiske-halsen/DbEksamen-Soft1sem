@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MongoAPI.DTO;
 using MongoAPI.Models;
 using MongoAPI.Services;
 using MongoDB.Bson;
@@ -31,6 +32,12 @@ namespace MongoAPI.Controllers
         public async Task<Order> CreateOrder(Order order)
         {
             return await _orderService.CreateOrder(order);
+        }
+
+        [HttpGet("/restaurant-summary/{restaurantId}")]
+        public List<RestaurantItemsSummaryCount> GetRestaurantSummary(int restaurantId)
+        {
+            return _orderService.GetRestaurantItemsSummaryCount(restaurantId);
         }
     }
 }

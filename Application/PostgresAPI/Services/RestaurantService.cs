@@ -15,8 +15,8 @@ namespace PostgresAPI.Services
         public Task<MenuItemDTO> CreateMenuItem(MenuItemDTO menuItemDTO, int restaurantId);
         public Task<MenuItemDTO> DeleteMenuItem(int menuItemId);
         public Task<Response> Register(RegisterUserDTO registerUserDTO);
-
     }
+
     public class RestaurantService : IRestaurantService
     {
         private readonly IRestaurantRepository _restaurantRepository;

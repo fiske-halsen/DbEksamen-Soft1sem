@@ -1,8 +1,11 @@
-﻿namespace MongoAPI.DTO
+﻿using MongoDB.Bson.Serialization.Attributes;
+
+namespace MongoAPI.DTO
 {
     public class ItemDTO
     {
         public string Name { get; set; }
-        public string Price { get; set; }
+
+        public double Price { get; set; }
     }
 }
