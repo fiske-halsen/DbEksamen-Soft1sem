@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace RestaurantMicroservice.ErrorHandling
+namespace Common.ErrorHandling
 {
-    public class HttpStatusException : Exception
+    public class HttpStatusException: Exception
     {
         public int StatusCode { get; set; }
         public string ContentType { get; set; } = @"text/plain";

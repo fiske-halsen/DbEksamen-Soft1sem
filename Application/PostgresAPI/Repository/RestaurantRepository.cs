@@ -17,7 +17,6 @@ namespace PostgresAPI.Repository
         public Task<Restaurant> GetRestaurantById(int restaurantId);
         public Task<MenuItem> GetMenuItemFromId(int menuItemId);
     }
-
     public class RestaurantRepository : IRestaurantRepository
     {
         private readonly DbApplicationContext _applicationContext;

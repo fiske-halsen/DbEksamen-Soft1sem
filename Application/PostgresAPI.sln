@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantMicroservice", "PostgresAPI\RestaurantMicroservice.csproj", "{E211D4BA-0756-4051-91F9-32079A19AE33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PostgresAPI", "PostgresAPI\PostgresAPI.csproj", "{E211D4BA-0756-4051-91F9-32079A19AE33}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdentityServer\IdentityServer.csproj", "{F1F41498-C630-479A-92DA-33A3A5492E2C}"
 EndProject
@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoAPI", "MongoAPI\MongoA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neo4JAPI", "Neo4JAPI\Neo4JAPI.csproj", "{4134A664-B317-40B6-A853-74095AA8707B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{5F15AD0D-3E7D-4659-99FB-AC987E08875F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{5F15AD0D-3E7D-4659-99FB-AC987E08875F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
