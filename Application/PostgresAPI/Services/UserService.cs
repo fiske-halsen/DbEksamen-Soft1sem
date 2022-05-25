@@ -1,22 +1,36 @@
-﻿using PostgresAPI.DTO;
+﻿using Common.ErrorHandling;
+using PostgresAPI.DTO;
+using PostgresAPI.Repository;
 
 namespace PostgresAPI.Services
 {
-    public interface IUserService {
-        public bool Login(LoginUserDTO loginUserDTO);
-        public bool Register(RegisterUserDTO registerUserDTO);
-    
-    }
-    public class UserService : IUserService
+    public class UserService
     {
-        public bool Login(LoginUserDTO loginUserDTO)
+        private readonly IUserRepository _userRepository;
+        public UserService(IUserRepository userRepository)
         {
-            throw new NotImplementedException();
+            _userRepository = userRepository;
+
+        }
+        public async Task<Response> Register(RegisterUserDTO registerUserDTO)
+        {
+            var password = registerUserDTO.Password;
+            var confirmPassword = registerUserDTO.PasswordRepeated;
+
+            var user = await _userRepository.GetUserByEmail(registerUserDTO.Email);
+
+            if (user != null)
+            {
+                throw new HttpStatusException(StatusCodes.Status400BadRequest, "User with the givne email already exists");
+            }
+
+            if (!registerUserDTO.Equals(confirmPassword))
+            {
+                throw new HttpStatusException(StatusCodes.Status400BadRequest, "Passwords not matching..");
+            }
+
+            return await _userRepository.Register(registerUserDTO);
         }
 
-        public bool Register(RegisterUserDTO registerUserDTO)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

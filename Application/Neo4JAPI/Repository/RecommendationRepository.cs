@@ -20,9 +20,6 @@ namespace Neo4JAPI.Repository
             _driver = GraphDatabase.Driver("bolt://localhost:7687", AuthTokens.Basic("neo4j", "password"));
         }
 
-
-
-
         public async Task AddCustomerRestaurantRelation(string restaurantName, string customerName)
         {
             var statementText = new StringBuilder();
@@ -35,12 +32,9 @@ namespace Neo4JAPI.Repository
 
             {"rName", restaurantName },
             {"cName", customerName }
-            
         };
-
             var session = this._driver.AsyncSession();
             var result = await session.WriteTransactionAsync(tx => tx.RunAsync(statementText.ToString(), statementParameters));
-            
         }
 
         public async Task AddRestaurantTypeRelation(string restaurantName, string restaurantType)
@@ -50,7 +44,6 @@ namespace Neo4JAPI.Repository
             statementText.Append("MERGE (t:R_Type {type: $rType})");
             statementText.Append("MERGE (r)-[:TYPE_OF]->(t)");
             
-
             var statementParameters = new Dictionary<string, object>
         {
 

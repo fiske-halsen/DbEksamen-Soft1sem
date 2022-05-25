@@ -10,20 +10,18 @@ namespace PostgresAPI.Controllers
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class RestaurantController : ControllerBase
+    public class RestaurantsController : ControllerBase
     {
         private readonly IRestaurantService _restaurantService;
-        public RestaurantController(IRestaurantService restaurantService)
+        public RestaurantsController(IRestaurantService restaurantService)
         {
             _restaurantService = restaurantService;
         }
-
         [HttpGet("")]
         public async Task<IEnumerable<RestaurantDTO>> GetAllRestaurants()
         {
             return await _restaurantService.GetAllRestaurants();
         }
-
         [HttpGet("/{restaurantId}/menu")]
         public async Task<RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId)
         {
@@ -45,5 +43,20 @@ namespace PostgresAPI.Controllers
             return await _restaurantService.DeleteMenuItem(menuItemId);
         }
 
+        [AllowAnonymous]
+        [HttpPost("/register")]
+        public async Task<Response> Register(RegisterUserDTO registerUserDTO)
+        {
+            return await _restaurantService.Register(registerUserDTO);
+
+            //return new Response()
+            //{
+            //    Message = "sads",
+            //    Status = "success"
+            //};
+        }
+
     }
+
 }
+

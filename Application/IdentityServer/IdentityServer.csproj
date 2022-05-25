@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PostgresAPI\RestaurantMicroservice.csproj" />
+    <ProjectReference Include="..\PostgresAPI\PostgresAPI.csproj" />
   </ItemGroup>
 
 </Project>

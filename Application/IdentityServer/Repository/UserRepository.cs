@@ -46,8 +46,10 @@ namespace IdentityServer.Repository
         {
             return await _connection.QueryFirstOrDefaultAsync<Role>(
                 "SELECT u.\"Id\", " +
-                "r.\"RoleType\" FROM \"Users\" AS u " +
-                "INNER JOIN \"Roles\" AS r ON u.\"RoleId\" = u.\"Id\"" +
+                "r.\"RoleType\" " +
+                "FROM \"Users\" AS u " +
+                "INNER JOIN \"Roles\" AS r " +
+                "ON u.\"RoleId\" = u.\"Id\"" +
                 " WHERE u.\"Id\" = @Id", new { Id = userId });
         }
     }

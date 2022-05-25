@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using PostgresAPI.DTO;
+using PostgresAPI.Services;
 
 namespace PostgresAPI.Controllers
 {
@@ -6,25 +8,16 @@ namespace PostgresAPI.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly ILogger<UsersController> _logger;
+        private readonly UserService _userService;
 
-        public UsersController(ILogger<UsersController> logger)
+        public UsersController(UserService userService)
         {
-            _logger = logger;
+            _userService = userService;
         }
-
-        //[HttpPost("login")]
-        //public IEnumerable<dynamic> Login()
-        //{
-        //    return 1;
-        //}
-
-
-        //[HttpPost("register")]
-        //public IEnumerable<dynamic> Register()
-        //{
-        //    return 1;
-        //}
-
+        [HttpPost("register")]
+        public async Task<Response> Register(RegisterUserDTO registerUserDTO)
+        {
+           return await _userService.Register(registerUserDTO);
+        }
     }
 }
