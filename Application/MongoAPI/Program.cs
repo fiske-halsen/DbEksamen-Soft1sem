@@ -1,5 +1,6 @@
 using MongoAPI;
 using MongoAPI.Context;
+using MongoAPI.ErrorHandling;
 using MongoAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +13,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<DbApplicationContext>(
     builder.Configuration.GetSection("OrderDatabase"));
 
-builder.Services.AddAuthorization();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+                   options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 //-------------------------- Services for dependency injection ----------------//'
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
@@ -31,8 +33,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.ConfigureExceptionHandler();
 app.UseHttpsRedirection();
-
 app.MapControllers();
-
 app.Run();
