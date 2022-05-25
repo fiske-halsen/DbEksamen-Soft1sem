@@ -43,18 +43,8 @@ namespace PostgresAPI.Controllers
             return await _restaurantService.DeleteMenuItem(menuItemId);
         }
 
-        [AllowAnonymous]
-        [HttpPost("/register")]
-        public async Task<Response> Register(RegisterUserDTO registerUserDTO)
-        {
-            return await _restaurantService.Register(registerUserDTO);
-
-            //return new Response()
-            //{
-            //    Message = "sads",
-            //    Status = "success"
-            //};
-        }
+        
+        
 
     }
 

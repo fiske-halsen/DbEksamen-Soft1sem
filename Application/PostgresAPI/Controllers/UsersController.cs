@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PostgresAPI.DTO;
 using PostgresAPI.Services;
@@ -8,16 +9,17 @@ namespace PostgresAPI.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
-        public UsersController(UserService userService)
+        public UsersController(IUserService userService)
         {
             _userService = userService;
         }
-        [HttpPost("register")]
+        [AllowAnonymous]
+        [HttpPost("/register")]
         public async Task<Response> Register(RegisterUserDTO registerUserDTO)
         {
-           return await _userService.Register(registerUserDTO);
+            return await _userService.Register(registerUserDTO);
         }
     }
 }
