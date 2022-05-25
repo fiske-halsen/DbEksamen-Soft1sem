@@ -15,16 +15,16 @@ namespace MongoAPI.Controllers
         public OrderController(IOrderService orderService) =>
             _orderService = orderService;
 
-        [HttpGet("")]
-        public async Task<List<Order>> GetAllOrders()
+        [HttpGet("/restaurant/{restaurantId}")]
+        public async Task<List<Order>> GetAllOrdersFromRestaurant(int restaurantId)
         {
-            return await _orderService.GetAllOrders();
+            return await _orderService.GetAllOrdersFromRestaurant(restaurantId);
         }
 
-        [HttpGet("order/{orderId}")]
-        public async Task<ActionResult<OrderDTO>> GetOrder(ObjectId id)
+        [HttpGet("/customer/{customerEmail}")]
+        public async Task<List<Order>> GetOrdersFromCustomer(string customerEmail)
         {
-            return await _orderService.GetOrder(id);
+            return await _orderService.GetOrdersFromCustomer(customerEmail);
         }
 
         [HttpPost("")]

@@ -11,8 +11,8 @@ namespace MongoAPI
 {
     public interface IOrderRepository
     {
-        public Task<List<Order>> GetAllOrders();
-        public Task<OrderDTO?> GetOrder(ObjectId id);
+        public Task<List<Order>> GetAllOrdersFromRestaurant(int restaurantId);
+        public Task<List<Order>> GetOrdersFromCustomer(string CustomerEmail);
         public Task<Order> CreateOrder(Order order);
     }
 
@@ -46,12 +46,27 @@ namespace MongoAPI
                 RestaurantName = x.RestaurantName,
                 Items = (List<ItemDTO>)x.Items,
                 Price = x.Price,
-                CustomerName = x.CustomerName
+                CustomerName = x.CustomerEmail
             };
 
-        public async Task<OrderDTO?> GetOrder(ObjectId id)
+        public List<OrderDTO> orderDTOFromCustomer(List<Order> OrdersFromCustomer)
         {
-            return (OrderDTO?)await _ordersCollection.FindAsync(x => x.Id == id);
+            List<OrderDTO> ordersDTO = new List<OrderDTO>();
+
+            return ordersDTO;
+        }
+
+        public async Task<List<Order>> GetAllOrdersFromRestaurant(int restaurantId)
+        {
+            return await _ordersCollection.Find(x => x.RestaurantId == restaurantId).ToListAsync();
+
+            //return _ordersCollection.AsQueryable().Select(AsOrderDTO).ToList();
+        }
+
+        public async Task<List<Order>> GetOrdersFromCustomer(string customerEmail)
+        {
+            // Return with model Order object
+            return await _ordersCollection.Find(x => x.CustomerEmail == customerEmail).ToListAsync();
         }
 
         public async Task<Order> CreateOrder(Order order)
@@ -59,13 +74,6 @@ namespace MongoAPI
             await _ordersCollection.InsertOneAsync(order);
 
             return order;
-        }
-
-        public async Task<List<Order>> GetAllOrders()
-        {
-            return await _ordersCollection.Find(x => true).ToListAsync();
-
-            //return _ordersCollection.AsQueryable().Select(AsOrderDTO).ToList();
         }
     }
 }

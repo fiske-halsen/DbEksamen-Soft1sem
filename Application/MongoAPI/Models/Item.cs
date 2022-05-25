@@ -5,12 +5,13 @@ namespace MongoAPI.Models
 {
     public class Item
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId Id { get; set; }
+        //[BsonId]
+        //[BsonRepresentation(BsonType.ObjectId)]
+        //public ObjectId Id { get; set; }
 
         [BsonElement("Name")]
         public string Name { get; set; } = null!;
+
         [BsonElement("Price")]
         public string Price { get; set; }
 
