@@ -28,7 +28,7 @@ public class RecommendationController : ControllerBase
         await _recommendationService.AddRestaurantTypeRelation(restaurantName, restaurantType);
     }
     [HttpGet("/favorite-restaurant-type/{customerName}")]
-    public async Task <string> FindFavoriteRestaurantFromCustomerName(string customerName)
+    public async Task <List<string>> FindFavoriteRestaurantFromCustomerName(string customerName)
     {
        return await _recommendationService.FindFavoriteRestaurantFromCustomerName(customerName);
     }
