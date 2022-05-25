@@ -4,7 +4,11 @@ using PostgresAPI.Repository;
 
 namespace PostgresAPI.Services
 {
-    public class UserService
+    public interface IUserService
+    {
+        public Task<Response> Register(RegisterUserDTO registerUserDTO);
+    }
+    public class UserService: IUserService
     {
         private readonly IUserRepository _userRepository;
         public UserService(IUserRepository userRepository)
@@ -24,7 +28,7 @@ namespace PostgresAPI.Services
                 throw new HttpStatusException(StatusCodes.Status400BadRequest, "User with the givne email already exists");
             }
 
-            if (!registerUserDTO.Equals(confirmPassword))
+            if (!password.Equals(confirmPassword))
             {
                 throw new HttpStatusException(StatusCodes.Status400BadRequest, "Passwords not matching..");
             }

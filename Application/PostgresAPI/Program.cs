@@ -96,7 +96,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
   builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
   builder.Services.AddScoped<IRestaurantService, RestaurantService>();
   builder.Services.AddScoped<IUserRepository, UserRepository>();
-  //builder.Services.AddScoped<UserService>();
+  builder.Services.AddScoped<IUserService, UserService>();
 
 
 
