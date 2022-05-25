@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PostgresAPI.Context;
@@ -11,9 +12,10 @@ using PostgresAPI.Context;
 namespace PostgresAPI.Migrations
 {
     [DbContext(typeof(DbApplicationContext))]
-    partial class DbApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220525140749_test_16")]
+    partial class test_16
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -547,9 +549,7 @@ namespace PostgresAPI.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2022, 5, 25, 14, 19, 15, 233, DateTimeKind.Utc).AddTicks(9869));
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -587,33 +587,33 @@ namespace PostgresAPI.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2022, 5, 25, 14, 19, 15, 234, DateTimeKind.Utc).AddTicks(386),
+                            CreatedAt = new DateTime(2022, 5, 25, 14, 7, 49, 11, DateTimeKind.Utc).AddTicks(7619),
                             Email = "Niels@Andersen.dk",
                             LastName = "Andersen",
                             Name = "Niels",
-                            Password = "$2a$11$fES.A9PJsTr8zw3w2SF48uO7W/QsI/fZRdWTIJdErLorBQdSWML9i",
+                            Password = "$2a$11$q6/kDrslWFhsO3OXuFAAnuad2FftT4CTsv7NAn.veTmb1L1CmH9JC",
                             PhoneNumber = "44334455",
                             RoleId = 1
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2022, 5, 25, 14, 19, 15, 396, DateTimeKind.Utc).AddTicks(7709),
+                            CreatedAt = new DateTime(2022, 5, 25, 14, 7, 49, 159, DateTimeKind.Utc).AddTicks(2311),
                             Email = "Restaurant@Ejer.dk",
                             LastName = "Ejer",
                             Name = "Restaurant",
-                            Password = "$2a$11$hp.QyydIaq.voe28X/IPT.Dd7nRvbdfF22JrYgbdvOIt2JqQihgvm",
+                            Password = "$2a$11$u3AgJWEqcTBSbcbzbY44iOIfcO6/6CMooICL90U6M31i2gmKrx3s.",
                             PhoneNumber = "44334422",
                             RoleId = 2
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2022, 5, 25, 14, 19, 15, 553, DateTimeKind.Utc).AddTicks(7292),
+                            CreatedAt = new DateTime(2022, 5, 25, 14, 7, 49, 310, DateTimeKind.Utc).AddTicks(5571),
                             Email = "Restaurant@Ejer2.dk",
                             LastName = "Ejer2",
                             Name = "Restaurant2",
-                            Password = "$2a$11$d.I63aIEKX261sNi9ysLd.Z1iSyImCihiUt/slocbPobssZV/fKBe",
+                            Password = "$2a$11$/VTcL1t27rHg09Mir8gmLeu71KEjbuyebR0Y58Ri6RhGUZlw4G5Mu",
                             PhoneNumber = "44334432",
                             RoleId = 2
                         });

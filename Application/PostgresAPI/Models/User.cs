@@ -15,5 +15,7 @@ namespace PostgresAPI.Models
         [ForeignKey("RoleId")]
         public int RoleId { get; set; }
         public Role Role { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        
     }
 }
