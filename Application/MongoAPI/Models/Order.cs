@@ -8,7 +8,9 @@ namespace MongoAPI.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId Id { get; set; }
-        [BsonElement("RestaurantId")]
+
+        //TODO FIX to upper case R
+        [BsonElement("restaurantId")]
         public int RestaurantId { get; set; }
 
         [BsonElement("RestaurantName")]
@@ -17,10 +19,13 @@ namespace MongoAPI.Models
         [BsonElement("Items")]
         public ICollection<Item> Items { get; set; } = new List<Item>();
 
-        [BsonElement("Price")]
-        public string Price { get; set; }
+        [BsonElement("TotalPrice")]
+        public double TotalPrice { get; set; }
 
         [BsonElement("CustomerEmail")]
         public string CustomerEmail { get; set; }
+
+        [BsonElement("CreatedAt")]
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 }

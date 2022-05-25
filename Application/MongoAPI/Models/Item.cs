@@ -13,7 +13,7 @@ namespace MongoAPI.Models
         public string Name { get; set; } = null!;
 
         [BsonElement("Price")]
-        public string Price { get; set; }
+        public double Price { get; set; }
 
     }
 }
