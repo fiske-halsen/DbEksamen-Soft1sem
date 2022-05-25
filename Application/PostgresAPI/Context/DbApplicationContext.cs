@@ -44,7 +44,9 @@ namespace PostgresAPI.Context
            .Property(e => e.MenuItemTypeChoice)
            .HasConversion(new EnumToStringConverter<Common.Enums.MenuItemTypeChoice>());
 
-
+            builder.Entity<User>()
+               .Property(u => u.CreatedAt)
+               .HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<Role>().HasData(
                 new Role { Id = 1, RoleType = Common.Enums.RoleType.Customer },
