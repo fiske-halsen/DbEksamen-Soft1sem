@@ -6,3 +6,8 @@ obj
 packages
 vs
 transactions/
+Docker/Neo-docker/conf/
+Docker/Neo-docker/data/
+Docker/Neo-docker/import/
+Docker/Neo-docker/logs/
+Docker/Neo-docker/plugins/
