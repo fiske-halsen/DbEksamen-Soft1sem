@@ -1,13 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Neo4j.Driver;
 using Neo4JAPI.DTO;
 using Neo4JAPI.Services;
 
 [Route("api/[controller]")]
+[Authorize]
 [ApiController]
 public class RecommendationController : ControllerBase
 {
-
     private readonly IRecommendationService _recommendationService;
     public RecommendationController(IRecommendationService recommendationService)
     {
@@ -25,5 +25,4 @@ public class RecommendationController : ControllerBase
     {
         return await _recommendationService.FindFavoriteRestaurantFromCustomerEmail(customerEmail);
     }
-
 }
