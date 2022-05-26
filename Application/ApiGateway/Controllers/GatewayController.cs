@@ -1,5 +1,6 @@
 using ApiGateway.Service;
 using Microsoft.AspNetCore.Mvc;
+using Neo4JAPI.DTO;
 using PostgresAPI.DTO;
 
 namespace ApiGateway.Controllers
@@ -15,10 +16,15 @@ namespace ApiGateway.Controllers
             _microserviceHandler = mircoserviceHandler;
         }
 
-        [HttpGet("")]
-        public async Task<IEnumerable<RestaurantDTO>> Get()
+        [HttpGet("/restaurants")]
+        public async Task<IEnumerable<RestaurantDTO>> GetAllRestaurants()
         {
             return await _microserviceHandler.GetAllRestaurants();
+        }
+        [HttpGet("/favorite-food-type")]
+        public async Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerEmail(string customerEmail)
+        {
+            return await _microserviceHandler.FindFavoriteRestaurantFromCustomerEmail(customerEmail);
         }
     }
 }
