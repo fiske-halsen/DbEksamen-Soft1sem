@@ -1,0 +1,31 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "db1e12dd-ba4b-40da-b571-112b90db7b2d": {
+      "ProjectGuid": "db1e12dd-ba4b-40da-b571-112b90db7b2d",
+      "DisplayName": "OcelotGatewayAPI",
+      "ColorIndex": 0
+    },
+    "e211d4ba-0756-4051-91f9-32079a19ae33": {
+      "ProjectGuid": "e211d4ba-0756-4051-91f9-32079a19ae33",
+      "DisplayName": "PostgresAPI",
+      "ColorIndex": 1
+    },
+    "f1f41498-c630-479a-92da-33a3a5492e2c": {
+      "ProjectGuid": "f1f41498-c630-479a-92da-33a3a5492e2c",
+      "DisplayName": "IdentityServer",
+      "ColorIndex": 2
+    },
+    "65f5ab88-acbc-4327-8738-17a4b1b4795c": {
+      "ProjectGuid": "65f5ab88-acbc-4327-8738-17a4b1b4795c",
+      "DisplayName": "MongoAPI",
+      "ColorIndex": 3
+    },
+    "4134a664-b317-40b6-a853-74095aa8707b": {
+      "ProjectGuid": "4134a664-b317-40b6-a853-74095aa8707b",
+      "DisplayName": "Neo4JAPI",
+      "ColorIndex": 4
+    }
+  },
+  "NextColorIndex": 5
+}

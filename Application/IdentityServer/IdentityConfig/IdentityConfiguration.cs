@@ -10,17 +10,17 @@ namespace IdentityServer.IdentityConfig
         public static IEnumerable<ApiScope> ApiScopes =>
         new List<ApiScope>
         {
-            new ApiScope("RestaurantServiceAPI", "RestaurantService API"),
-            new ApiScope("MenuServiceAPI", "MenuService API"),
-            new ApiScope("CustomerHistoryServiceAPI", "CustomerHistory API"),
+            new ApiScope("PostgresAPI", "Postgres API"),
+            new ApiScope("MongoDBAPI", "MongoDB API"),
+            new ApiScope("Neo4jAPI", "Neo4j API"),
             new ApiScope("GatewayServiceAPI", "GatewayService API"),
         };
 
         public static IEnumerable<Client> Clients(IConfiguration configuration)
         {
-            var restaurantServiceKey = configuration["RestaurantService:Key"];
-            var menuServiceAPIKey = configuration["MenuService:Key"];
-            var customerHistoryServiceKey = configuration["CustomerHistoryService:Key"];
+            var PostgresAPI = configuration["PostgresAPI:Key"];
+            var MongoDBAPI = configuration["MongoDBAPI:Key"];
+            var Neo4jAPI = configuration["Neo4jAPI:Key"];
             var apiGateWayKey = configuration["ApiGateWayClient:Key"];
 
             return new List<Client>
@@ -28,32 +28,32 @@ namespace IdentityServer.IdentityConfig
                 // ---------------------------- CLIENTS FOR MICROSERVICES ---------------------------------- 
                 new Client
                 {
-                    ClientId = "RestaurantService",
+                    ClientId = "Postgres",
                     AccessTokenType = AccessTokenType.Jwt,
                     // no interactive user, use the clientid/secret for authentication
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
 
                     // scopes that client has access to
-                    AllowedScopes = { "RestaurantServiceAPI"},
+                    AllowedScopes = { "PostgresAPI"},
 
                     // secret for authentication
-                    ClientSecrets = { new Secret(restaurantServiceKey.Sha256())},
+                    ClientSecrets = { new Secret(PostgresAPI.Sha256())},
 
                     // To test it via POSTMAN,
                     AllowAccessTokensViaBrowser = true,
                 },
                   new Client
                 {
-                    ClientId = "MenuService",
+                    ClientId = "MongoDB",
                     AccessTokenType = AccessTokenType.Jwt,
                     // no interactive user, use the clientid/secret for authentication
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
 
                     // scopes that client has access to
-                    AllowedScopes = { "MenuServiceAPI"},
+                    AllowedScopes = { "MongoDBAPI"},
 
                     // secret for authentication
-                    ClientSecrets = { new Secret(menuServiceAPIKey.Sha256())},
+                    ClientSecrets = { new Secret(MongoDBAPI.Sha256())},
 
                     // To test it via POSTMAN,
                     AllowAccessTokensViaBrowser = true,
@@ -61,16 +61,16 @@ namespace IdentityServer.IdentityConfig
 
                     new Client
                 {
-                    ClientId = "CustomerHistoryService",
+                    ClientId = "Neo4j",
                     AccessTokenType = AccessTokenType.Jwt,
                     // no interactive user, use the clientid/secret for authentication
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
 
                     // scopes that client has access to
-                    AllowedScopes = { "CustomerHistoryServiceAPI"},
+                    AllowedScopes = { "Neo4jAPI"},
 
                     // secret for authentication
-                    ClientSecrets = { new Secret(customerHistoryServiceKey.Sha256())},
+                    ClientSecrets = { new Secret(Neo4jAPI.Sha256())},
 
                     // To test it via POSTMAN,
                     AllowAccessTokensViaBrowser = true,
@@ -90,35 +90,35 @@ namespace IdentityServer.IdentityConfig
         }
         public static IEnumerable<ApiResource> ApiResources(IConfiguration configuration)
         {
-            var restaurantServiceKey = configuration["RestaurantService:Key"];
-            var menuServiceAPIKey = configuration["MenuService:Key"];
-            var customerHistoryServiceKey = configuration["CustomerHistoryService:Key"];
+            var PostgresAPI = configuration["PostgresAPI:Key"];
+            var MongoDBAPI = configuration["MongoDBAPI:Key"];
+            var Neo4jAPI = configuration["Neo4jAPI:Key"];
             var apiGateWayKey = configuration["ApiGateWayClient:Key"];
 
             return new List<ApiResource>
             {
                 new ApiResource
                 {
-                    Name = "RestaurantServiceAPI",
-                    Description = "RestaurantServiceAPI resource",
-                    ApiSecrets = { new Secret(restaurantServiceKey.Sha256()) },
-                    Scopes =  { "RestaurantServiceAPI", }
+                    Name = "PostgresAPI",
+                    Description = "PostgresAPI resource",
+                    ApiSecrets = { new Secret(PostgresAPI.Sha256()) },
+                    Scopes =  { "PostgresAPI", }
                 },
 
                 new ApiResource
                 {
-                    Name = "MenuServiceAPI",
-                    Description = "MenuServiceAPI resource",
-                    ApiSecrets = { new Secret(menuServiceAPIKey.Sha256()) },
-                    Scopes =  { "MenuServiceAPI", }
+                    Name = "MongoDBAPI",
+                    Description = "MongoDBAPI resource",
+                    ApiSecrets = { new Secret(MongoDBAPI.Sha256()) },
+                    Scopes =  { "MongoDBAPI", }
                 },
 
                 new ApiResource
                 {
-                    Name = "CustomerHistoryServiceAPI",
-                    Description = "CustomerHistoryServiceAPI resource",
-                    ApiSecrets = { new Secret(customerHistoryServiceKey.Sha256()) },
-                    Scopes =  { "CustomerHistoryServiceAPI", }
+                    Name = "Neo4jAPI",
+                    Description = "Neo4jAPI resource",
+                    ApiSecrets = { new Secret(Neo4jAPI.Sha256()) },
+                    Scopes =  { "Neo4jAPI", }
                 },
 
                    new ApiResource
