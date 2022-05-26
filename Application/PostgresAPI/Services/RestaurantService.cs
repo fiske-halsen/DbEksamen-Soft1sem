@@ -1,5 +1,5 @@
 ﻿using Common.ErrorHandling;
-using PostgresAPI.DTO;
+using Common.Models;
 using PostgresAPI.Models;
 using PostgresAPI.Repository;
 using RestaurantMicroservice.ErrorHandling;

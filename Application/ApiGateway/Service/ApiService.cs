@@ -36,7 +36,7 @@ namespace ApiGateway.Service
                 }
             }
         }
-        public async Task <T> GetSingle<T>(string url, ApplicationCredentials credentials)
+        public async Task<T> GetSingle<T>(string url, ApplicationCredentials credentials)
         {
             var apiClient = ApiClientInitializer.GetClient();
 
@@ -60,46 +60,55 @@ namespace ApiGateway.Service
             }
         }
 
-        //public async Task<bool> Post(string url, string contentJson)
-        //{
-        //    var apiClient = ApiClientInitializer.GetClient();
-        //    apiClient.SetBearerToken(Token.AccessToken);
+        public async Task<bool> Post(string url, string contentJson, ApplicationCredentials credentials)
+        {
+            var apiClient = ApiClientInitializer.GetClient();
 
-        //    HttpContent httpContent = new StringContent(contentJson, Encoding.UTF8, "application/json");
 
-        //    using (var response = await apiClient.PostAsync(url, httpContent))
-        //    {
-        //        return response.IsSuccessStatusCode;
-        //    }
-        //}
+            var token = await _tokenService.RequestTokenClientApplication(credentials.ClientId, credentials.ClientSecret, credentials.Scope);
 
-        //public async Task<bool> Patch(string url, string contentJson)
-        //{
-        //    var apiClient = ApiClientInitializer.GetClient();
+            apiClient.SetBearerToken(token.Token.AccessToken);
 
-        //    apiClient.SetBearerToken(Token.AccessToken);
+            HttpContent httpContent = new StringContent(contentJson, Encoding.UTF8, "application/json");
 
-        //    var request = new HttpRequestMessage(new HttpMethod("PATCH"), url);
+            using (var response = await apiClient.PostAsync(url, httpContent))
+            {
+                return response.IsSuccessStatusCode;
+            }
+        }
 
-        //    request.Content = new StringContent(contentJson, Encoding.UTF8, "application/json");
+        public async Task<bool> Patch(string url, string contentJson, ApplicationCredentials credentials)
+        {
+            var apiClient = ApiClientInitializer.GetClient();
 
-        //    using (var response = await apiClient.SendAsync(request))
-        //    {
+            var token = await _tokenService.RequestTokenClientApplication(credentials.ClientId, credentials.ClientSecret, credentials.Scope);
 
-        //        return response.IsSuccessStatusCode;
-        //    }
-        //}
+            apiClient.SetBearerToken(token.Token.AccessToken);
 
-        //public async Task<bool> Delete(string url)
-        //{
-        //    var apiClient = ApiClientInitializer.GetClient();
-        //    apiClient.SetBearerToken(Token.AccessToken);
+            var request = new HttpRequestMessage(new HttpMethod("PATCH"), url);
 
-        //    using (var response = await apiClient.DeleteAsync(url))
-        //    {
-        //        return response.IsSuccessStatusCode;
-        //    }
+            request.Content = new StringContent(contentJson, Encoding.UTF8, "application/json");
 
-        //}
+            using (var response = await apiClient.SendAsync(request))
+            {
+
+                return response.IsSuccessStatusCode;
+            }
+        }
+
+        public async Task<bool> Delete(string url, ApplicationCredentials credentials)
+        {
+            var apiClient = ApiClientInitializer.GetClient();
+
+            var token = await _tokenService.RequestTokenClientApplication(credentials.ClientId, credentials.ClientSecret, credentials.Scope);
+
+            apiClient.SetBearerToken(token.Token.AccessToken);
+
+            using (var response = await apiClient.DeleteAsync(url))
+            {
+                return response.IsSuccessStatusCode;
+            }
+
+        }
     }
 }

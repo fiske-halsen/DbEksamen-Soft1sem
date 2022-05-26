@@ -1,5 +1,5 @@
 ﻿using Common.ErrorHandling;
-using PostgresAPI.DTO;
+using Common.Models;
 using PostgresAPI.Repository;
 
 namespace PostgresAPI.Services

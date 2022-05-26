@@ -3,17 +3,17 @@ using IdentityModel.Client;
 
 namespace ApiGateway.Service
 {
-
-
     public class TokenService
     {
         private readonly IConfiguration _configuration;
         private readonly string _identityServerUrl;
+        private readonly HelperService _helperService;
 
-        public TokenService(IConfiguration configuration)
+        public TokenService(IConfiguration configuration, HelperService helperService)
         {
             _configuration = configuration;
             _identityServerUrl = _configuration["IdentityServer:Host"];
+            _helperService = helperService;
         }
 
         public async Task<TokenResult> RequestTokenClientApplication(string clientId, string clientSecret, string scope)

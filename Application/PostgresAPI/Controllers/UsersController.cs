@@ -1,6 +1,6 @@
+using Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PostgresAPI.DTO;
 using PostgresAPI.Services;
 
 namespace PostgresAPI.Controllers

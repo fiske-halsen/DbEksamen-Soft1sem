@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ApiService>();
 builder.Services.AddScoped<IMircoserviceHandler, MicroserviceHandler>();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<HelperService>();
 
 var app = builder.Build();
 

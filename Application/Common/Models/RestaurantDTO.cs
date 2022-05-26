@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static PostgresAPI.Common.Enums;
 
-namespace PostgresAPI.DTO
+namespace Common.Models
 {
     public class RestaurantDTO
     {

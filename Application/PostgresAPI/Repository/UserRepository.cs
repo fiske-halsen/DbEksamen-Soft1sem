@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Common.Models;
+using Microsoft.EntityFrameworkCore;
 using PostgresAPI.Context;
-using PostgresAPI.DTO;
 using PostgresAPI.Models;
 
 namespace PostgresAPI.Repository
