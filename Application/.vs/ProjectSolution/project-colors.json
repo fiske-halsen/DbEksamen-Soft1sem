@@ -25,7 +25,12 @@
       "ProjectGuid": "4134a664-b317-40b6-a853-74095aa8707b",
       "DisplayName": "Neo4JAPI",
       "ColorIndex": 4
+    },
+    "90002c04-8015-41d2-8b71-0c29a19cbfc6": {
+      "ProjectGuid": "90002c04-8015-41d2-8b71-0c29a19cbfc6",
+      "DisplayName": "ApiGateway",
+      "ColorIndex": 5
     }
   },
-  "NextColorIndex": 5
+  "NextColorIndex": 6
 }
