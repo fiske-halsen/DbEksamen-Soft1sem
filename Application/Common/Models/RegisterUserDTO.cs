@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PostgresAPI.DTO
+namespace Common.Models
 {
     public class RegisterUserDTO
     {

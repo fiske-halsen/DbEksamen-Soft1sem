@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PostgresAPI.DTO
+namespace Common.Models
 {
     public class MenuItemDTO
     {
@@ -9,6 +9,6 @@ namespace PostgresAPI.DTO
         [Required]
         public double Price { get; set; }
         [Required]
-        public string MenuItemType { get; set;}
+        public string MenuItemType { get; set; }
     }
 }
