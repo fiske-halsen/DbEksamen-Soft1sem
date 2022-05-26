@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\MongoAPI\MongoAPI.csproj" />
     <ProjectReference Include="..\Neo4JAPI\Neo4JAPI.csproj" />
     <ProjectReference Include="..\PostgresAPI\PostgresAPI.csproj" />
   </ItemGroup>

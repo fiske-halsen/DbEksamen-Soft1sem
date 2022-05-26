@@ -14,7 +14,12 @@ builder.Services.AddScoped<ApiService>();
 builder.Services.AddScoped<IMircoserviceHandler, MicroserviceHandler>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<HelperService>();
-
+builder.Services.AddSwaggerGen(c => {
+    c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+    c.IgnoreObsoleteActions();
+    c.IgnoreObsoleteProperties();
+    c.CustomSchemaIds(type => type.FullName);
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
