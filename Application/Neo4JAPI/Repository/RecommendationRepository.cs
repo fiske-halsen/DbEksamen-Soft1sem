@@ -1,4 +1,5 @@
 ﻿using Neo4j.Driver;
+using Neo4JAPI.DTO;
 using System.Data;
 using System.Diagnostics;
 using System.Text;
@@ -7,9 +8,8 @@ namespace Neo4JAPI.Repository
 {   
     public interface IRecommendationRepository
     {
-        public Task AddCustomerRestaurantRelation(string restaurantName, string customerName);
-        public Task AddRestaurantTypeRelation(string restaurantName, string restaurantType);
-        public Task <List<string>> FindFavoriteRestaurantFromCustomerName(string customerName);
+        public Task AddCustomerRestaurantRelation(OrderDTO orderDTO);
+        public Task <FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerName(string customerName);
     }
     public class RecommendationRepository : IRecommendationRepository
     {
@@ -20,43 +20,29 @@ namespace Neo4JAPI.Repository
             _driver = GraphDatabase.Driver("bolt://localhost:7687", AuthTokens.Basic("neo4j", "password"));
         }
 
-        public async Task AddCustomerRestaurantRelation(string restaurantName, string customerName)
+        public async Task AddCustomerRestaurantRelation(OrderDTO orderDTO)
         {
             var statementText = new StringBuilder();
             statementText.Append("MERGE (p:Person {name: $cName})");
             statementText.Append("MERGE (r:Restaurant {name: $rName})");
+            statementText.Append("MERGE (t:R_Type {type: $rType})");
+            statementText.Append("MERGE (r)-[:TYPE_OF]->(t)");
             statementText.Append("CREATE (p)-[:ORDERS_FROM]->(r)");
 
             var statementParameters = new Dictionary<string, object>
         {
 
-            {"rName", restaurantName },
-            {"cName", customerName }
+            {"rName", orderDTO.RestaurantName },
+            {"cName", orderDTO.CustomerName },
+            {"rType", orderDTO.RestaurantType }
         };
             var session = this._driver.AsyncSession();
             var result = await session.WriteTransactionAsync(tx => tx.RunAsync(statementText.ToString(), statementParameters));
         }
 
-        public async Task AddRestaurantTypeRelation(string restaurantName, string restaurantType)
-        {
-            var statementText = new StringBuilder();
-            statementText.Append("MERGE (r:Restaurant {name: $rName})");
-            statementText.Append("MERGE (t:R_Type {type: $rType})");
-            statementText.Append("MERGE (r)-[:TYPE_OF]->(t)");
-            
-            var statementParameters = new Dictionary<string, object>
-        {
+        
 
-            {"rName", restaurantName },
-            {"rType", restaurantType }
-
-        };
-
-            var session = this._driver.AsyncSession();
-            var result = await session.WriteTransactionAsync(tx => tx.RunAsync(statementText.ToString(), statementParameters));
-        }
-
-        public async Task <List<string>> FindFavoriteRestaurantFromCustomerName(string customerName)
+        public async Task <FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerName(string customerName)
         {
             var statementText = new StringBuilder();
             statementText.Append("MATCH (p:Person {name: $cName})-[:ORDERS_FROM]->(r:Restaurant)-[:TYPE_OF]->(t:R_Type) RETURN count(*) AS occurrence, t.type ORDER BY occurrence DESC");
@@ -91,7 +77,8 @@ namespace Neo4JAPI.Repository
                         products.Add(reader.Current[0].ToString());
                         products.Add(reader.Current[1].ToString());
                     }
-
+                    
+                    
                     return products;
                 });
             }
@@ -100,8 +87,8 @@ namespace Neo4JAPI.Repository
                 // asynchronously close session
                 await session.CloseAsync();
             }
-
-            return result;
+            var favType = new FavoriteRestaurantTypeDTO { RestaurantType = result[1], TimesOrdered = result[0] };
+            return favType;
 
         }
     }
