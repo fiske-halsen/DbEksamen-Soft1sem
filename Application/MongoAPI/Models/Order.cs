@@ -9,8 +9,7 @@ namespace MongoAPI.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId Id { get; set; }
 
-        //TODO FIX to upper case R
-        [BsonElement("restaurantId")]
+        [BsonElement("RestaurantId")]
         public int RestaurantId { get; set; }
 
         [BsonElement("RestaurantName")]

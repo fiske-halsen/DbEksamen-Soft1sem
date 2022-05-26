@@ -1,9 +1,14 @@
-﻿namespace Neo4JAPI.DTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Neo4JAPI.DTO
 {
     public class OrderDTO
     {
-        public string CustomerName { get; set; }
+        [Required]
+        public string CustomerEmail { get; set; }
+        [Required]
         public string RestaurantName { get; set; }
-        public string RestaurantType{ get; set; }
+        [Required]
+        public string RestaurantType { get; set; }
     }
 }

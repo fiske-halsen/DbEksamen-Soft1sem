@@ -75,7 +75,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
         // base-address of your identityserver
         options.Authority = identityServer;
           options.TokenValidationParameters.ValidateAudience = true;
-          options.Audience = "RestaurantServiceAPI"; // if you are using API resources, you can specify the name here
+          options.Audience = "PostgresAPI"; // if you are using API resources, you can specify the name here
                                                      // IdentityServer emits a typ header by default, recommended extra check
         options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
           options.RequireHttpsMetadata = false;

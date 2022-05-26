@@ -14,20 +14,16 @@ public class RecommendationController : ControllerBase
         _recommendationService = recommendationService;
     }
 
-
-
-
     [HttpPost("/order")]
     public async Task AddCustomerRestaurantRelation(OrderDTO orderDTO)
     {
-       await _recommendationService.AddCustomerRestaurantRelation(orderDTO);
+        await _recommendationService.AddCustomerRestaurantRelation(orderDTO);
     }
 
-    
-    [HttpGet("/favorite-restaurant-type/{customerName}")]
-    public async Task <FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerName(string customerName)
+    [HttpGet("/favorite-restaurant-type/{customerEmail}")]
+    public async Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerName(string customerEmail)
     {
-       return await _recommendationService.FindFavoriteRestaurantFromCustomerName(customerName);
+        return await _recommendationService.FindFavoriteRestaurantFromCustomerEmail(customerEmail);
     }
 
 }

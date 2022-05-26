@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neo4JAPI", "Neo4JAPI\Neo4JA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{5F15AD0D-3E7D-4659-99FB-AC987E08875F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OcelotGatewayAPI", "OcelotGatewayAPI\OcelotGatewayAPI.csproj", "{DB1E12DD-BA4B-40DA-B571-112B90DB7B2D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{90002C04-8015-41D2-8B71-0C29A19CBFC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,10 @@ Global
 		{5F15AD0D-3E7D-4659-99FB-AC987E08875F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F15AD0D-3E7D-4659-99FB-AC987E08875F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F15AD0D-3E7D-4659-99FB-AC987E08875F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DB1E12DD-BA4B-40DA-B571-112B90DB7B2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DB1E12DD-BA4B-40DA-B571-112B90DB7B2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DB1E12DD-BA4B-40DA-B571-112B90DB7B2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DB1E12DD-BA4B-40DA-B571-112B90DB7B2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90002C04-8015-41D2-8B71-0C29A19CBFC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90002C04-8015-41D2-8B71-0C29A19CBFC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90002C04-8015-41D2-8B71-0C29A19CBFC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90002C04-8015-41D2-8B71-0C29A19CBFC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

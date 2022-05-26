@@ -8,7 +8,7 @@ namespace Neo4JAPI.Services
     public interface IRecommendationService
     {
         public Task AddCustomerRestaurantRelation(OrderDTO orderDTO);
-        public Task <FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerName(string customerName);
+        public Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerEmail(string customerEmail);
     }
     public class RecommendationService : IRecommendationService
     {
@@ -25,11 +25,9 @@ namespace Neo4JAPI.Services
             await _recommendationRepository.AddCustomerRestaurantRelation(orderDTO);
         }
 
-        
-
-        public async Task <FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerName(string customerName)
+        public async Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerEmail(string customerEmail)
         {
-           return await _recommendationRepository.FindFavoriteRestaurantFromCustomerName(customerName);
+            return await _recommendationRepository.FindFavoriteRestaurantFromCustomerEmail(customerEmail);
         }
     }
 }
