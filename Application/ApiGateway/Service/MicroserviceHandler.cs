@@ -1,15 +1,16 @@
 ﻿using ApiGateway.Models;
 using Common.Models;
-using Neo4JAPI.DTO;
 
 namespace ApiGateway.Service
 {
     public interface IMircoserviceHandler
     {
         public Task<IEnumerable<RestaurantDTO>> GetAllRestaurants();
+        public Task<IEnumerable<RestaurantMenuDTO>> GetMenuFromRestaurantId(int restaurantId);
         public Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerEmail(string customerEmail);
         public Task<TokenDTO> Login(LoginUserDTO loginDto);
         public Task<TokenDTO> Register(RegisterUserDTO registerDto);
+
     }
     public class MicroserviceHandler : IMircoserviceHandler
     {
@@ -44,6 +45,7 @@ namespace ApiGateway.Service
             return await _apiService.Get<RestaurantDTO>(_POSTGRESAPI_BASE_URL, _postgresClientCredentials);
         }
 
+
         public async Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerEmail(string customerEmail)
         {
             return await _apiService.GetSingle<FavoriteRestaurantTypeDTO>(_NEO4JAPI_BASE_URL + "/favorite-restaurant-type/" + customerEmail, _neo4jClientCredentials);
@@ -56,7 +58,12 @@ namespace ApiGateway.Service
         }
         public Task<TokenDTO> Register(RegisterUserDTO registerDto)
         {
-            // TÓDO
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<RestaurantMenuDTO>> GetMenuFromRestaurantId(int restaurantId)
+        {
+            return await _apiService.Get<RestaurantMenuDTO>(_POSTGRESAPI_BASE_URL +"/"+ restaurantId + "/menus", _postgresClientCredentials);
         }
     }
 }
