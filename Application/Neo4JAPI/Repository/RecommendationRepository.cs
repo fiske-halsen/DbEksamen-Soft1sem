@@ -5,11 +5,11 @@ using System.Diagnostics;
 using System.Text;
 
 namespace Neo4JAPI.Repository
-{   
+{
     public interface IRecommendationRepository
     {
         public Task AddCustomerRestaurantRelation(OrderDTO orderDTO);
-        public Task <FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerName(string customerName);
+        public Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerEmail(string customerEmail);
     }
     public class RecommendationRepository : IRecommendationRepository
     {
@@ -23,7 +23,7 @@ namespace Neo4JAPI.Repository
         public async Task AddCustomerRestaurantRelation(OrderDTO orderDTO)
         {
             var statementText = new StringBuilder();
-            statementText.Append("MERGE (p:Person {name: $cName})");
+            statementText.Append("MERGE (p:Person {email: $cEmail})");
             statementText.Append("MERGE (r:Restaurant {name: $rName})");
             statementText.Append("MERGE (t:R_Type {type: $rType})");
             statementText.Append("MERGE (r)-[:TYPE_OF]->(t)");
@@ -33,27 +33,24 @@ namespace Neo4JAPI.Repository
         {
 
             {"rName", orderDTO.RestaurantName },
-            {"cName", orderDTO.CustomerName },
+            {"cEmail", orderDTO.CustomerEmail },
             {"rType", orderDTO.RestaurantType }
         };
             var session = this._driver.AsyncSession();
             var result = await session.WriteTransactionAsync(tx => tx.RunAsync(statementText.ToString(), statementParameters));
         }
 
-        
-
-        public async Task <FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerName(string customerName)
+        public async Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerEmail(string customerEmail)
         {
             var statementText = new StringBuilder();
-            statementText.Append("MATCH (p:Person {name: $cName})-[:ORDERS_FROM]->(r:Restaurant)-[:TYPE_OF]->(t:R_Type) RETURN count(*) AS occurrence, t.type ORDER BY occurrence DESC");
-
+            statementText.Append("MATCH (p:Person {email: $cEmail})-[:ORDERS_FROM]->(r:Restaurant)-[:TYPE_OF]->(t:R_Type) RETURN count(*) AS occurrence, t.type ORDER BY occurrence DESC");
 
             var statementParameters = new Dictionary<string, object>
-        {
+            {
 
-            {"cName", customerName }
+            {"cEmail", customerEmail }
 
-        };
+            };
 
             List<string> result = null;
             var session = this._driver.AsyncSession();
@@ -68,7 +65,7 @@ namespace Neo4JAPI.Repository
 
                     // Send cypher query to the database
                     var reader = await tx.RunAsync(statementText.ToString(), statementParameters);
-                        
+
 
                     // Loop through the records asynchronously
                     while (await reader.FetchAsync())
@@ -77,8 +74,8 @@ namespace Neo4JAPI.Repository
                         products.Add(reader.Current[0].ToString());
                         products.Add(reader.Current[1].ToString());
                     }
-                    
-                    
+
+
                     return products;
                 });
             }

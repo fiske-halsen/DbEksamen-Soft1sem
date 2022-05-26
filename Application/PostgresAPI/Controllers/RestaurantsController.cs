@@ -43,9 +43,6 @@ namespace PostgresAPI.Controllers
             return await _restaurantService.DeleteMenuItem(menuItemId);
         }
 
-        
-        
-
     }
 
 }
