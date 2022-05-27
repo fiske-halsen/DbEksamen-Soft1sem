@@ -1,8 +1,10 @@
 ﻿using Common.Models;
 using Microsoft.EntityFrameworkCore;
+using PostgresAPI.Common;
 using PostgresAPI.Context;
 using PostgresAPI.Models;
 using System.Linq.Expressions;
+using System.Text.Json;
 using static PostgresAPI.Common.Enums;
 
 namespace PostgresAPI.Repository
@@ -20,9 +22,11 @@ namespace PostgresAPI.Repository
     public class RestaurantRepository : IRestaurantRepository
     {
         private readonly DbApplicationContext _applicationContext;
-        public RestaurantRepository(DbApplicationContext applicationContext)
+        private readonly IRedisCacheService _redisCacheService;
+        public RestaurantRepository(DbApplicationContext applicationContext, IRedisCacheService redisCacheService)
         {
             _applicationContext = applicationContext;
+            _redisCacheService = redisCacheService;
         }
 
         private static readonly Expression<Func<MenuItem, MenuItemDTO>> AsMenuItemDto =
@@ -110,6 +114,7 @@ namespace PostgresAPI.Repository
         }
         public async Task<MenuItem> GetMenuItemFromId(int menuItemId)
         {
+            
             var menuItem =
                await _applicationContext.
                MenuItems
@@ -135,18 +140,36 @@ namespace PostgresAPI.Repository
         /// <returns></returns>
         public async Task<RestaurantMenuDTO> GetMenuFromRestaurantId(Restaurant restaurant)
         {
-            var menuItems =
+
+            var redisData = _redisCacheService.Get<string>(restaurant.Id.ToString());
+            List<MenuItemDTO> menuItems;
+            if (redisData == null)
+            {
+                menuItems =
                 await _applicationContext.
                 MenuItems.
                 Where(x => x.Menu.Restaurant.Id == restaurant.Id).
                 Select(AsMenuItemDto)
                .ToListAsync();
 
+                _redisCacheService.Set<string>(restaurant.Id.ToString(), JsonSerializer.Serialize(menuItems));
+
+
+
+            }
+            else
+            {
+                menuItems = JsonSerializer.Deserialize <List<MenuItemDTO>>(redisData);
+            }
+            
+
+
             return new RestaurantMenuDTO()
             {
                 RestaurantName = restaurant.Name,
                 Menu = menuItems
             };
+
         }
 
         /// <summary>
