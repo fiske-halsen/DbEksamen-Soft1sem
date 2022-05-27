@@ -1,5 +1,6 @@
 ﻿using ApiGateway.Models;
 using Common.Models;
+using System.Text.Json;
 
 namespace ApiGateway.Service
 {
@@ -10,13 +11,18 @@ namespace ApiGateway.Service
         public Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerEmail(string customerEmail);
         public Task<TokenDTO> Login(LoginUserDTO loginDto);
         public Task<TokenDTO> Register(RegisterUserDTO registerDto);
+        public Task<bool> CreateOrder(Order order);
+        public Task<IEnumerable<Order>> GetAllOrdersFromRestaurant(int restaurantId);
+        public Task<IEnumerable<Order>> GetOrdersFromCustomer(string customerEmail);
+
+        public Task<IEnumerable<RestaurantItemsSummaryCount>> GetRestaurantSummary(int restaurantId);
 
     }
     public class MicroserviceHandler : IMircoserviceHandler
     {
         private readonly ApiService _apiService;
         private const string _POSTGRESAPI_BASE_URL = "https://localhost:7073/api/Restaurants";
-        private const string _MONGOAPI_BASE_URL = "https://localhost:7061/api/Orders";
+        private const string _MONGOAPI_BASE_URL = "https://localhost:7061/api/Order";
         private const string _NEO4JAPI_BASE_URL = "https://localhost:7080";
         private readonly IConfiguration _configuration;
         private readonly HelperService _helperService;
@@ -38,14 +44,20 @@ namespace ApiGateway.Service
             _mongoDBClientCredentials = _helperService.GetMicroserviceClientCredentials(HelperService.ClientType.MongoClient);
             _neo4jClientCredentials = _helperService.GetMicroserviceClientCredentials(HelperService.ClientType.Neo4jClient);
             _tokenService = tokenService;
-         }
+        }
 
+        //--------------------------------------------- POSTGRESAPI ---------------------------------------------
         public async Task<IEnumerable<RestaurantDTO>> GetAllRestaurants()
         {
             return await _apiService.Get<RestaurantDTO>(_POSTGRESAPI_BASE_URL, _postgresClientCredentials);
         }
 
+        public async Task<IEnumerable<RestaurantMenuDTO>> GetMenuFromRestaurantId(int restaurantId)
+        {
+            return await _apiService.Get<RestaurantMenuDTO>(_POSTGRESAPI_BASE_URL + "/" + restaurantId + "/menus", _postgresClientCredentials);
+        }
 
+        //--------------------------------------------- NEO4J ---------------------------------------------
         public async Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerEmail(string customerEmail)
         {
             return await _apiService.GetSingle<FavoriteRestaurantTypeDTO>(_NEO4JAPI_BASE_URL + "/favorite-restaurant-type/" + customerEmail, _neo4jClientCredentials);
@@ -54,16 +66,33 @@ namespace ApiGateway.Service
         public async Task<TokenDTO> Login(LoginUserDTO loginDto)
         {
             var token = await _tokenService.RequestTokenForUser(loginDto.Username, loginDto.Password);
-            return new TokenDTO() { AccessToken = token.Token.AccessToken, ExpiresIn = token.Token.ExpiresIn};
+            return new TokenDTO() { AccessToken = token.Token.AccessToken, ExpiresIn = token.Token.ExpiresIn };
         }
         public Task<TokenDTO> Register(RegisterUserDTO registerDto)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<RestaurantMenuDTO>> GetMenuFromRestaurantId(int restaurantId)
+        //--------------------------------------------- MONGOAPI ---------------------------------------------
+        public async Task<bool> CreateOrder(Order order)
         {
-            return await _apiService.Get<RestaurantMenuDTO>(_POSTGRESAPI_BASE_URL +"/"+ restaurantId + "/menus", _postgresClientCredentials);
+            string jsonString = JsonSerializer.Serialize(order);
+
+            return await _apiService.Post(_MONGOAPI_BASE_URL, jsonString, _mongoDBClientCredentials);
+        }
+
+        public async Task<IEnumerable<Order>> GetAllOrdersFromRestaurant(int restaurantId)
+        {
+            return await _apiService.Get<Order>(_MONGOAPI_BASE_URL + "/restaurant/" + restaurantId, _mongoDBClientCredentials);
+        }
+
+        public async Task<IEnumerable<Order>> GetOrdersFromCustomer(string customerEmail)
+        {
+            return await _apiService.Get<Order>(_MONGOAPI_BASE_URL + "/customer/" + customerEmail, _mongoDBClientCredentials);
+        }
+
+        public async Task<IEnumerable<RestaurantItemsSummaryCount>> GetRestaurantSummary(int restaurantId){
+            return await _apiService.Get<RestaurantItemsSummaryCount>(_MONGOAPI_BASE_URL + "/restaurant-summary/" + restaurantId, _mongoDBClientCredentials);
         }
     }
 }

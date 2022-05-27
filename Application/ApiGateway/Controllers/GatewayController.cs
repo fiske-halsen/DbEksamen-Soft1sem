@@ -3,8 +3,6 @@ using ApiGateway.Service;
 using Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MongoAPI.DTO;
-using MongoAPI.Models;
 
 namespace ApiGateway.Controllers
 {
@@ -19,7 +17,8 @@ namespace ApiGateway.Controllers
         {
             _microserviceHandler = mircoserviceHandler;
         }
-        //postgres
+
+        //--------------------------------------------- POSTGRESAPI ---------------------------------------------
         [HttpGet("/restaurants")]
         public async Task<IEnumerable<RestaurantDTO>> GetAllRestaurants()
         {
@@ -49,6 +48,8 @@ namespace ApiGateway.Controllers
         {
             throw new NotImplementedException();
         }
+
+        // --------------------------------------------- GATEWAY ---------------------------------------------
         [HttpPost("/login")]
         public async Task<TokenDTO> Login(LoginUserDTO loginDto)
         {
@@ -65,8 +66,36 @@ namespace ApiGateway.Controllers
         // THis one should not be a endpoint but should rather be a combined endpoint
         // with creating a order, and then make logic in microservicehandler for sending data to both mongo and post at the same time
 
+
+        // --------------------------------------------- MONGOAPI ---------------------------------------------
+        //TODO:
+        [HttpPost("/mongo")]
+        public async Task<bool> CreateOrder(Order order)
+        {
+            return await _microserviceHandler.CreateOrder(order);
+        }
+
+        [HttpGet("/mongo/restaurant/{restaurantId}")]
+        public async Task<IEnumerable<Order>> GetAllOrdersFromRestaurant(int restaurantId)
+        {
+            return await _microserviceHandler.GetAllOrdersFromRestaurant(restaurantId);
+        }
+
+        [HttpGet("/mongo/customer/{customerEmail}")]
+        public async Task<IEnumerable<Order>> GetOrdersFromCustomer(string customerEmail)
+        {
+            return await _microserviceHandler.GetOrdersFromCustomer(customerEmail);
+        }
+
+        [HttpGet("/mongo/restaurant-summary/{restaurantId}")]
+        public async Task<IEnumerable<RestaurantItemsSummaryCount>> GetRestaurantSummary(int restaurantId)
+        {
+            return await _microserviceHandler.GetRestaurantSummary(restaurantId);
+        }
+
+        //--------------------------------------------- NEO4JAPI ---------------------------------------------
         [HttpPost("/order")]
-        public async Task AddCustomerRestaurantRelation(OrderDTO orderDTO)
+        public async Task AddCustomerRestaurantRelation(RelationOrderDTO relationOrderDTO)
         {
             throw new NotImplementedException();
         }
@@ -75,30 +104,6 @@ namespace ApiGateway.Controllers
         public async Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerEmail(string customerEmail)
         {
             return await _microserviceHandler.FindFavoriteRestaurantFromCustomerEmail(customerEmail);
-        }
-
-        //TODO:
-        [HttpGet("/restaurant/{restaurantId}")]
-        public async Task<List<Order>> GetAllOrdersFromRestaurant(int restaurantId)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        [HttpGet("/customer/{customerEmail}")]
-        public async Task<List<Order>> GetOrdersFromCustomer(string customerEmail)
-        {
-            throw new NotImplementedException();
-        }
-        [HttpPost("/test")]
-        public async Task<Order> CreateOrder(Order order)
-        {
-            throw new NotImplementedException();
-        }
-        [HttpGet("/restaurant-summary/{restaurantId}")]
-        public List<RestaurantItemsSummaryCount> GetRestaurantSummary(int restaurantId)
-        {
-            throw new NotImplementedException();
         }
     }
 }

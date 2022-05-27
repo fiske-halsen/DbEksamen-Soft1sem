@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Common.Models
 {
-    public class OrderDTO
+    public class RelationOrderDTO
     {
         [Required]
         public string CustomerEmail { get; set; }

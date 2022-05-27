@@ -103,14 +103,14 @@ namespace MongoAPI
         /// <returns></returns>
         public List<RestaurantItemsSummaryCount> GetRestaurantItemsSummaryCount(int restaurantId)
         {
-            string map = @"
-                     function() {
-                     var order = this;
-                      for (var i = 0; i < order.Items.length; i++) {
-                                var key = order.Items[i].Name;                              
-                                emit(key, { count: 1 });
-                        }                    
-                    }";
+            string map = "function(){"
+                   + "var order = this;" +
+                  "if (order.RestaurantId == " + restaurantId +
+                  "){"
+                +
+                " for (var i = 0; i < order.Items.length; i++) {" +
+                               " var key = order.Items[i].Name;" +
+                               " emit(key, { count: 1 }); } } }";
 
             string reduce = @"function(key, values) {
                             var result = { itemName: 0, count: 0 };
