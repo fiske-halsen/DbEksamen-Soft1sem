@@ -110,14 +110,14 @@ namespace MongoAPI
                 +
                 " for (var i = 0; i < order.Items.length; i++) {" +
                                " var key = order.Items[i].Name;" +
-                               " emit(key, { count: 1, totalPrice: order.Items[i].Price }); } } }";
+                               " emit(key, { Count: 1, TotalPrice: order.Items[i].Price }); } } }";
 
             string reduce = @"function(key, values) {
-                            var result = { itemName: 0, count: 0, totalPrice: 0 };
+                            var result = { ItemName: 0, Count: 0, TotalPrice: 0 };
                             values.forEach(function(value){               
-                                result.count += value.count;
-                                result.totalPrice += value.totalPrice;
-                                result.itemName = key;
+                                result.Count += value.Count;
+                                result.TotalPrice += value.TotalPrice;
+                                result.ItemName = key;
                             });
                             return result;
                         }";

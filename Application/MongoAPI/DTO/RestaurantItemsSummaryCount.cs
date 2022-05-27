@@ -6,10 +6,10 @@ namespace MongoAPI.DTO
 {
     public class RestaurantItemsSummaryCount
     {
-        [BsonElement("Count")]
-        public int Count { get; set; }
         [BsonElement("ItemName")]
         public string ItemName { get; set; }
+        [BsonElement("Count")]
+        public int Count { get; set; }
         [BsonElement("TotalPrice")]
         public double TotalPrice { get; set; }
     }
