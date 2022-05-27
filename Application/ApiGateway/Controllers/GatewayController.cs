@@ -68,11 +68,7 @@ namespace ApiGateway.Controllers
         // with creating a order, and then make logic in microservicehandler for sending data to both mongo and post at the same time
 
         // --------------------------------------------- NEO4J ---------------------------------------------
-        [HttpPost("order-relation")]
-        public async Task<bool> AddCustomerRestaurantRelation(OrderDTO orderDTO)
-        {
-            return await _microserviceHandler.AddCustomerRestaurantRelation(orderDTO);
-        }
+        
 
         [HttpGet("favorite-restaurant-type/{customerEmail}")]
         public async Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerName(string customerEmail)
@@ -106,10 +102,6 @@ namespace ApiGateway.Controllers
             return await _microserviceHandler.GetRestaurantSummary(restaurantId);
         }
 
-        [HttpGet("favorite-food-type")]
-        public async Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerEmail(string customerEmail)
-        {
-            return await _microserviceHandler.FindFavoriteRestaurantFromCustomerEmail(customerEmail);
-        }
+        
     }
 }

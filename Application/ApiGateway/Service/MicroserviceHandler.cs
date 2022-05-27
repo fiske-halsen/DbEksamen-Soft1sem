@@ -10,7 +10,7 @@ namespace ApiGateway.Service
         public Task<IEnumerable<RestaurantDTO>> GetAllRestaurants();
         public Task<RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId);
         public Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerEmail(string customerEmail);
-        public Task<bool> AddCustomerRestaurantRelation(OrderDTO orderDTO);
+        
         public Task<TokenDTO> Login(LoginUserDTO loginDto);
         public Task<TokenDTO> Register(RegisterUserDTO registerDto);
         public Task<bool> CreateOrder(CombinedDTO combinedDTO);
@@ -91,12 +91,7 @@ namespace ApiGateway.Service
             return await _apiService.GetSingle<FavoriteRestaurantTypeDTO>(_NEO4JAPI_BASE_URL + "/favorite-restaurant-type/" + customerEmail, _neo4jClientCredentials);
         }
 
-        public async Task<bool> AddCustomerRestaurantRelation(OrderDTO orderDTO)
-        {
-            string jsonString = JsonSerializer.Serialize(orderDTO);
-
-            return await _apiService.Post(_NEO4JAPI_BASE_URL + "/order", jsonString, _neo4jClientCredentials);
-        }
+       
 
         public async Task<TokenDTO> Login(LoginUserDTO loginDto)
         {

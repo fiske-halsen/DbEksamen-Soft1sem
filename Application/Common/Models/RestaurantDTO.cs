@@ -5,6 +5,8 @@ namespace Common.Models
     public class RestaurantDTO
     {
         [Required]
+        public int Id { get; set; }
+        [Required]
         public string RestaurantName { get; set; }
         [Required]
         public string RestaurantType { get; set; }
