@@ -1,4 +1,7 @@
+using ApiGateway.Authorization;
 using ApiGateway.Service;
+using Microsoft.AspNetCore.Authorization;
+using static ApiGateway.Authorization.OwnerRequirement;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +9,12 @@ var configuration = builder.Configuration;
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+                   options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+builder.Services.AddHttpContextAccessor();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -15,6 +24,8 @@ builder.Services.AddScoped<ApiService>();
 builder.Services.AddScoped<IMircoserviceHandler, MicroserviceHandler>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<HelperService>();
+builder.Services.AddSingleton<IAuthorizationHandler, HasOwnerRequirementHandler>();
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PolicyProvider>();
 
 var identityServer = configuration["IdentityServer:Host"];
 
@@ -31,7 +42,10 @@ builder.Services.AddAuthentication("token")
     });
 
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("OwnerOnly", policy => policy.RequireClaim("Role"));
+});
 
 builder.Services.AddSwaggerGen(c =>
 {

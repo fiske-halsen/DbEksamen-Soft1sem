@@ -21,15 +21,14 @@ namespace IdentityServer.IdentityConfig
                 var userId = Int32.Parse(subject);
 
                 var user = await _authRepository.GetUserById(userId);
-                var role = await _authRepository.GetUserRole(userId);
-            
+             
                 if (subject == null)
                 {
                     return;
                 }
                 var claims = new List<Claim>
                 {
-                new Claim("Role", role.RoleType),
+                new Claim("RoleId", user.RoleId.ToString()),
                 new Claim("Email", user.Email),
                 };
 

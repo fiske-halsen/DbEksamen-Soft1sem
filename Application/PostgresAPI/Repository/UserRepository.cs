@@ -43,10 +43,7 @@ namespace PostgresAPI.Repository
                 Password = BCrypt.Net.BCrypt.HashPassword(registerUserDTO.Password)
             };
 
-            Role role = new Role()
-            {
-                RoleType = Common.Enums.RoleType.Customer
-            };
+            var role = await _applicationContext.Roles.Where(r => r.RoleType == Common.Enums.RoleType.Customer).FirstOrDefaultAsync();
 
             user.Role = role;
 

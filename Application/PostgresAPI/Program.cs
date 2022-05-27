@@ -102,7 +102,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
   builder.Services.AddScoped<IRestaurantService, RestaurantService>();
   builder.Services.AddScoped<IUserRepository, UserRepository>();
   builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
+  builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
 
 
 var app = builder.Build();

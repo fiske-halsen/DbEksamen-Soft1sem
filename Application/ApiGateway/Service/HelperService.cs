@@ -19,7 +19,11 @@ namespace ApiGateway.Service
         {
             _configuration = configuration;   
         }
-
+        /// <summary>
+        /// Gets the correct client credentials for identity server
+        /// </summary>
+        /// <param name="clientType"></param>
+        /// <returns></returns>
         public ApplicationCredentials GetMicroserviceClientCredentials(ClientType clientType)
         {
             string clientId = null;
