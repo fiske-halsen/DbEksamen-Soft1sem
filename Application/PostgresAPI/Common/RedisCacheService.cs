@@ -7,8 +7,9 @@ namespace PostgresAPI.Common
     {
         T Get<T>(string key);
         T Set<T>(string key, T value);
+
     }
-    public class RedisCacheService: IRedisCacheService
+    public class RedisCacheService : IRedisCacheService
     {
         private readonly IDistributedCache _cache;
 

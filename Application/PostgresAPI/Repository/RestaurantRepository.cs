@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PostgresAPI.Common;
 using PostgresAPI.Context;
 using PostgresAPI.Models;
+using StackExchange.Redis;
 using System.Linq.Expressions;
 using System.Text.Json;
 using static PostgresAPI.Common.Enums;
@@ -22,11 +23,21 @@ namespace PostgresAPI.Repository
     public class RestaurantRepository : IRestaurantRepository
     {
         private readonly DbApplicationContext _applicationContext;
+        private readonly IConfiguration _configuration;
         private readonly IRedisCacheService _redisCacheService;
-        public RestaurantRepository(DbApplicationContext applicationContext, IRedisCacheService redisCacheService)
+        private readonly IDatabase _redisDatabase;
+        private readonly IServer _redisServer;
+
+        public RestaurantRepository(
+            DbApplicationContext applicationContext,
+            IRedisCacheService redisCacheService,
+            IConfiguration configuration)
         {
             _applicationContext = applicationContext;
             _redisCacheService = redisCacheService;
+            _configuration = configuration;
+            _redisDatabase = RedisConnector.Connector.Connection.GetDatabase();
+            _redisServer = RedisConnector.Connector.Connection.GetServer(_configuration.GetConnectionString("Redis"));
         }
 
         private static readonly Expression<Func<MenuItem, MenuItemDTO>> AsMenuItemDto =
@@ -46,9 +57,8 @@ namespace PostgresAPI.Repository
             StreetName = x.Address.StreetName,
             City = x.Address.CityInfo.City,
             ZipCode = x.Address.CityInfo.ZipCode
-            
-        };
 
+        };
 
         /// <summary>
         /// Creates a menu item for a specific restaurantId
@@ -71,9 +81,13 @@ namespace PostgresAPI.Repository
             };
 
             menu.MenuItems.Add(menuItem);
-            await _applicationContext.MenuItems.AddAsync(menuItem);
 
+            await _applicationContext.MenuItems.AddAsync(menuItem);
             await _applicationContext.SaveChangesAsync();
+
+            // REDIS CLEAR CACHE SINCE WE ADDED NEW ITEM FOR THAT RESTAURANT
+            _redisDatabase.KeyDelete(restaurantId.ToString());
+
             return new MenuItemDTO
             {
                 MenuItemName = menuItem.Name,
@@ -99,6 +113,7 @@ namespace PostgresAPI.Repository
             _applicationContext.MenuItems.Remove(menuItem);
 
             await _applicationContext.SaveChangesAsync();
+
             return tmpMenuItem;
         }
 
@@ -116,7 +131,7 @@ namespace PostgresAPI.Repository
         }
         public async Task<MenuItem> GetMenuItemFromId(int menuItemId)
         {
-            
+
             var menuItem =
                await _applicationContext.
                MenuItems
@@ -133,6 +148,7 @@ namespace PostgresAPI.Repository
                 Restaurants.
                 Where(x => x.Id == restaurantId).
                 FirstOrDefaultAsync();
+
             return resturant;
         }
         /// <summary>
@@ -142,8 +158,8 @@ namespace PostgresAPI.Repository
         /// <returns></returns>
         public async Task<RestaurantMenuDTO> GetMenuFromRestaurantId(Restaurant restaurant)
         {
-
             var redisData = _redisCacheService.Get<string>(restaurant.Id.ToString());
+
             List<MenuItemDTO> menuItems;
             if (redisData == null)
             {
@@ -155,23 +171,17 @@ namespace PostgresAPI.Repository
                .ToListAsync();
 
                 _redisCacheService.Set<string>(restaurant.Id.ToString(), JsonSerializer.Serialize(menuItems));
-
-
-
             }
             else
             {
-                menuItems = JsonSerializer.Deserialize <List<MenuItemDTO>>(redisData);
+                menuItems = JsonSerializer.Deserialize<List<MenuItemDTO>>(redisData);
             }
-            
-
 
             return new RestaurantMenuDTO()
             {
                 RestaurantName = restaurant.Name,
                 Menu = menuItems
             };
-
         }
 
         /// <summary>
@@ -182,7 +192,6 @@ namespace PostgresAPI.Repository
         /// <returns></returns>
         public async Task<MenuItemDTO> UpdateMenuItem(MenuItem menuItem, MenuItemDTO menuItemDTO)
         {
-
 
             menuItem.Price = menuItemDTO.Price;
             menuItem.Name = menuItemDTO.MenuItemName;
