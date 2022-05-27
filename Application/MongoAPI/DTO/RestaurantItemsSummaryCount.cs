@@ -10,5 +10,7 @@ namespace MongoAPI.DTO
         public int Count { get; set; }
         [BsonElement("itemName")]
         public string ItemName { get; set; }
+        [BsonElement("totalPrice")]
+        public double totalPrice { get; set; }
     }
 }
