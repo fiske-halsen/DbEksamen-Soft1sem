@@ -27,7 +27,7 @@ namespace ApiGateway.Controllers
         }
 
         [HttpGet("{restaurantId}/menu-from-restaurant")]
-        public async Task <IEnumerable<RestaurantMenuDTO>> GetMenuFromRestaurantId(int restaurantId)
+        public async Task <RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId)
         {
             return await _microserviceHandler.GetMenuFromRestaurantId(restaurantId);
         }

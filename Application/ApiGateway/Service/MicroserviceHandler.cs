@@ -8,7 +8,7 @@ namespace ApiGateway.Service
     public interface IMircoserviceHandler
     {
         public Task<IEnumerable<RestaurantDTO>> GetAllRestaurants();
-        public Task<IEnumerable<RestaurantMenuDTO>> GetMenuFromRestaurantId(int restaurantId);
+        public Task<RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId);
         public Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerEmail(string customerEmail);
         public Task<bool> AddCustomerRestaurantRelation(OrderDTO orderDTO);
         public Task<TokenDTO> Login(LoginUserDTO loginDto);
@@ -56,9 +56,9 @@ namespace ApiGateway.Service
             return await _apiService.Get<RestaurantDTO>(_POSTGRESAPI_BASE_URL, _postgresClientCredentials);
         }
 
-        public async Task<IEnumerable<RestaurantMenuDTO>> GetMenuFromRestaurantId(int restaurantId)
+        public async Task<RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId)
         {
-            return await _apiService.Get<RestaurantMenuDTO>(_POSTGRESAPI_BASE_URL + "/" + restaurantId + "/menus", _postgresClientCredentials);
+            return await _apiService.GetSingle<RestaurantMenuDTO>(_POSTGRESAPI_BASE_URL + "/" + restaurantId + "/menu", _postgresClientCredentials);
         }
 
         public async Task<bool> UpdateMenuItemFromId(int menuItemId, MenuItemDTO menuItemDTO)
@@ -72,10 +72,10 @@ namespace ApiGateway.Service
         {
             string jsonString = JsonSerializer.Serialize(menuItemDTO);
 
-            return await _apiService.Post(_POSTGRESAPI_BASE_URL + "/" + restaurantId + "menu/menu-item", jsonString, _postgresClientCredentials);
+            return await _apiService.Post(_POSTGRESAPI_BASE_URL + "/" + restaurantId + "/menu/menu-item", jsonString, _postgresClientCredentials);
         }
 
-        public async Task<bool> DeleteItemFromMenu(int menuItemId)
+        public async Task<bool> DeleteMenuItemFromID(int menuItemId)
         {
             return await _apiService.Delete(_POSTGRESAPI_BASE_URL + "/menu/menu-item/" + menuItemId, _postgresClientCredentials);
         }
@@ -154,6 +154,6 @@ namespace ApiGateway.Service
             return await _apiService.Get<RestaurantItemsSummaryCount>(_MONGOAPI_BASE_URL + "/restaurant-summary/" + restaurantId, _mongoDBClientCredentials);
         }
 
-      
+       
     }
 }
