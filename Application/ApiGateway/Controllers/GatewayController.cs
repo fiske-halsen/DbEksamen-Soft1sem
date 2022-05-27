@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ApiGateway.Controllers
 {
     [ApiController]
-    //[Authorize] TODO: put this on when security is ready....
+    [Authorize]
     [Route("[controller]")]
     public class GatewayController : ControllerBase
     {
@@ -51,12 +51,13 @@ namespace ApiGateway.Controllers
         }
 
         // --------------------------------------------- GATEWAY ---------------------------------------------
-        [HttpPost("login")]
-        public async Task<TokenDTO> Login(LoginUserDTO loginDto)
-        {
-            return await _microserviceHandler.Login(loginDto);
-        }
+        //[HttpPost("login")]
+        //public async Task<TokenDTO> Login(LoginUserDTO loginDto)
+        //{
+        //    return await _microserviceHandler.Login(loginDto);
+        //}
 
+        [AllowAnonymous]
         //[HttpPost("/register")]
         //public Task<TokenDTO> Register(RegisterUserDTO registerDto)
         //{
