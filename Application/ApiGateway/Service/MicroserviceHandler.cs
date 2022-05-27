@@ -12,7 +12,7 @@ namespace ApiGateway.Service
         public Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerEmail(string customerEmail);
         
         public Task<TokenDTO> Login(LoginUserDTO loginDto);
-        public Task<TokenDTO> Register(RegisterUserDTO registerDto);
+        public Task<bool> Register(RegisterUserDTO registerDto);
         public Task<bool> CreateOrder(CombinedDTO combinedDTO);
         public Task<IEnumerable<Order>> GetAllOrdersFromRestaurant(int restaurantId);
         public Task<IEnumerable<Order>> GetOrdersFromCustomer(string customerEmail);
@@ -25,7 +25,8 @@ namespace ApiGateway.Service
     public class MicroserviceHandler : IMircoserviceHandler
     {
         private readonly ApiService _apiService;
-        private const string _POSTGRESAPI_BASE_URL = "https://localhost:7073/api/Restaurants";
+        private const string _POSTGRESAPI_BASE_URL_RESTAURANTS = "https://localhost:7073/api/Restaurants";
+        private const string _POSTGRESAPI_BASE_URL_USERS = "https://localhost:7073/api/Users";
         private const string _MONGOAPI_BASE_URL = "https://localhost:7061/api/Order";
         private const string _NEO4JAPI_BASE_URL = "https://localhost:7080/api/Recommendation";
         private readonly IConfiguration _configuration;
@@ -51,48 +52,88 @@ namespace ApiGateway.Service
         }
 
         //--------------------------------------------- POSTGRESAPI ---------------------------------------------
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<RestaurantDTO>> GetAllRestaurants()
         {
-            return await _apiService.Get<RestaurantDTO>(_POSTGRESAPI_BASE_URL, _postgresClientCredentials);
+            return await _apiService.Get<RestaurantDTO>(_POSTGRESAPI_BASE_URL_RESTAURANTS, _postgresClientCredentials);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="restaurantId"></param>
+        /// <returns></returns>
         public async Task<RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId)
         {
-            return await _apiService.GetSingle<RestaurantMenuDTO>(_POSTGRESAPI_BASE_URL + "/" + restaurantId + "/menu", _postgresClientCredentials);
+            return await _apiService.GetSingle<RestaurantMenuDTO>(_POSTGRESAPI_BASE_URL_RESTAURANTS + "/" + restaurantId + "/menu", _postgresClientCredentials);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="menuItemId"></param>
+        /// <param name="menuItemDTO"></param>
+        /// <returns></returns>
         public async Task<bool> UpdateMenuItemFromId(int menuItemId, MenuItemDTO menuItemDTO)
         {
             string jsonString = JsonSerializer.Serialize(menuItemDTO);
 
-            return await _apiService.Patch(_POSTGRESAPI_BASE_URL + "/menu/menu-item/" + menuItemId, jsonString, _postgresClientCredentials);
+            return await _apiService.Patch(_POSTGRESAPI_BASE_URL_RESTAURANTS + "/menu/menu-item/" + menuItemId, jsonString, _postgresClientCredentials);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="restaurantId"></param>
+        /// <param name="menuItemDTO"></param>
+        /// <returns></returns>
         public async Task<bool> AddMenuItem(int restaurantId, MenuItemDTO menuItemDTO)
         {
             string jsonString = JsonSerializer.Serialize(menuItemDTO);
 
-            return await _apiService.Post(_POSTGRESAPI_BASE_URL + "/" + restaurantId + "/menu/menu-item", jsonString, _postgresClientCredentials);
+            return await _apiService.Post(_POSTGRESAPI_BASE_URL_RESTAURANTS + "/" + restaurantId + "/menu/menu-item", jsonString, _postgresClientCredentials);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="menuItemId"></param>
+        /// <returns></returns>
         public async Task<bool> DeleteMenuItemFromID(int menuItemId)
         {
-            return await _apiService.Delete(_POSTGRESAPI_BASE_URL + "/menu/menu-item/" + menuItemId, _postgresClientCredentials);
+            return await _apiService.Delete(_POSTGRESAPI_BASE_URL_RESTAURANTS + "/menu/menu-item/" + menuItemId, _postgresClientCredentials);
         }
 
-        public Task<TokenDTO> Register(RegisterUserDTO registerDto)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="registerDto"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<bool> Register(RegisterUserDTO registerDto)
         {
-            throw new NotImplementedException();
+            var jsonString = JsonSerializer.Serialize(registerDto);
+            return await _apiService.Post(_POSTGRESAPI_BASE_URL_USERS + "/register", jsonString, _postgresClientCredentials);
         }
 
         //--------------------------------------------- NEO4J ---------------------------------------------
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="customerEmail"></param>
+        /// <returns></returns>
         public async Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerEmail(string customerEmail)
         {
             return await _apiService.GetSingle<FavoriteRestaurantTypeDTO>(_NEO4JAPI_BASE_URL + "/favorite-restaurant-type/" + customerEmail, _neo4jClientCredentials);
         }
-
-       
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="loginDto"></param>
+        /// <returns></returns>
         public async Task<TokenDTO> Login(LoginUserDTO loginDto)
         {
             var token = await _tokenService.RequestTokenForUser(loginDto.Username, loginDto.Password);
@@ -100,6 +141,11 @@ namespace ApiGateway.Service
         }
 
         //--------------------------------------------- MONGOAPI ---------------------------------------------
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="combinedDTO"></param>
+        /// <returns></returns>
         public async Task<bool> CreateOrder(CombinedDTO combinedDTO)
         {
             var recommendationDTO = new RecommendationDTO()
@@ -133,17 +179,29 @@ namespace ApiGateway.Service
                 return false;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="restaurantId"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<Order>> GetAllOrdersFromRestaurant(int restaurantId)
         {
             return await _apiService.Get<Order>(_MONGOAPI_BASE_URL + "/restaurant/" + restaurantId, _mongoDBClientCredentials);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="customerEmail"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<Order>> GetOrdersFromCustomer(string customerEmail)
         {
             return await _apiService.Get<Order>(_MONGOAPI_BASE_URL + "/customer/" + customerEmail, _mongoDBClientCredentials);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="restaurantId"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<RestaurantItemsSummaryCount>> GetRestaurantSummary(int restaurantId)
         {
             return await _apiService.Get<RestaurantItemsSummaryCount>(_MONGOAPI_BASE_URL + "/restaurant-summary/" + restaurantId, _mongoDBClientCredentials);

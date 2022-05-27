@@ -20,6 +20,8 @@ namespace PostgresAPI.Controllers
         public async Task<Response> Register(RegisterUserDTO registerUserDTO)
         {
             return await _userService.Register(registerUserDTO);
+
+            
         }
     }
 }

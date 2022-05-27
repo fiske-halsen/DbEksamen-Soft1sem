@@ -13,6 +13,15 @@ namespace ApiGateway.Service
         {
             _tokenService = tokenService;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="credentials"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<IEnumerable<T>> Get<T>(string url, ApplicationCredentials credentials)
         {
             var apiClient = ApiClientInitializer.GetClient();
@@ -36,6 +45,15 @@ namespace ApiGateway.Service
                 }
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="credentials"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<T> GetSingle<T>(string url, ApplicationCredentials credentials)
         {
             var apiClient = ApiClientInitializer.GetClient();
@@ -59,7 +77,13 @@ namespace ApiGateway.Service
                 }
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="contentJson"></param>
+        /// <param name="credentials"></param>
+        /// <returns></returns>
         public async Task<bool> Post(string url, string contentJson, ApplicationCredentials credentials)
         {
             var apiClient = ApiClientInitializer.GetClient();
@@ -76,6 +100,13 @@ namespace ApiGateway.Service
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="contentJson"></param>
+        /// <param name="credentials"></param>
+        /// <returns></returns>
         public async Task<bool> Patch(string url, string contentJson, ApplicationCredentials credentials)
         {
             var apiClient = ApiClientInitializer.GetClient();
@@ -95,6 +126,12 @@ namespace ApiGateway.Service
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="credentials"></param>
+        /// <returns></returns>
         public async Task<bool> Delete(string url, ApplicationCredentials credentials)
         {
             var apiClient = ApiClientInitializer.GetClient();

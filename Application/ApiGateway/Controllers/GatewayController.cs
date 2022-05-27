@@ -1,5 +1,4 @@
 using ApiGateway.DTO;
-using ApiGateway.Models;
 using ApiGateway.Service;
 using Common.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -32,44 +31,35 @@ namespace ApiGateway.Controllers
             return await _microserviceHandler.GetMenuFromRestaurantId(restaurantId);
         }
 
+        [Authorize(Policy = "OwnerOnly")]
         [HttpPatch("menu/menu-item/{menuItemId}")]
         public async Task<bool> UpdateMenuItemFromId(int menuItemId, MenuItemDTO menuItemDTO)
         {
             return await _microserviceHandler.UpdateMenuItemFromId(menuItemId, menuItemDTO);
         }
 
+        [Authorize(Policy = "OwnerOnly")]
         [HttpPost("{restaurantId}/menu/menu-item")]
         public async Task<bool> AddMenuItem(int restaurantId, MenuItemDTO menuItemDTO)
         {
             return await _microserviceHandler.AddMenuItem(restaurantId, menuItemDTO);
         }
 
+        [Authorize(Policy = "OwnerOnly")]
         [HttpDelete("menu/menu-item/{menuItemId}")]
         public async Task<bool> DeleteMenuItemFromId(int menuItemId)
         {
             return await _microserviceHandler.DeleteMenuItemFromID(menuItemId);
         }
 
-        // --------------------------------------------- GATEWAY ---------------------------------------------
-        //[HttpPost("login")]
-        //public async Task<TokenDTO> Login(LoginUserDTO loginDto)
-        //{
-        //    return await _microserviceHandler.Login(loginDto);
-        //}
-
         [AllowAnonymous]
-        //[HttpPost("/register")]
-        //public Task<TokenDTO> Register(RegisterUserDTO registerDto)
-        //{
-        //    return Task.CompletedTask(0);
-        //}
-
-        //OPS testing purposes
-        // THis one should not be a endpoint but should rather be a combined endpoint
-        // with creating a order, and then make logic in microservicehandler for sending data to both mongo and post at the same time
+        [HttpPost("/register")]
+        public async Task<bool> Register(RegisterUserDTO registerDto)
+        {
+            return await _microserviceHandler.Register(registerDto);
+        }
 
         // --------------------------------------------- NEO4J ---------------------------------------------
-        
 
         [HttpGet("favorite-restaurant-type/{customerEmail}")]
         public async Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerName(string customerEmail)
@@ -78,7 +68,6 @@ namespace ApiGateway.Controllers
         }
 
         // --------------------------------------------- MONGOAPI ---------------------------------------------
-
         [HttpPost("order")]
         public async Task<bool> CreateOrder(CombinedDTO combinedDTO)
         {
@@ -102,7 +91,6 @@ namespace ApiGateway.Controllers
         {
             return await _microserviceHandler.GetRestaurantSummary(restaurantId);
         }
-
         
     }
 }

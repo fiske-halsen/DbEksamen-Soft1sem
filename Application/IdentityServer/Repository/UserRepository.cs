@@ -10,6 +10,8 @@ namespace IdentityServer.Repository
         Task<User> GetUserById(int userÍd);
         Task<User> GetUserByUsername(string email);
         Task<Role> GetUserRole(int userId);
+        Task<UserEntry> GetUserEntryById(int userId);
+        
     }
     public class UserRepository : IUserRepository
     {
@@ -27,7 +29,8 @@ namespace IdentityServer.Repository
                 "u.\"Id\", " +
                 "u.\"Name\", " +
                 "u.\"Email\", " +
-                "u.\"Password\" " +
+                "u.\"Password\", " +
+                "u.\"RoleId\" " +
                 " FROM \"Users\" AS u " +
                 "WHERE u.\"Id\" = @Id", new { Id = userId });
         }
@@ -42,6 +45,19 @@ namespace IdentityServer.Repository
                 " FROM \"Users\" AS u " +
                 "WHERE u.\"Email\" = @Email", new { Email = email });
         }
+
+        public async Task<UserEntry> GetUserEntryById(int userId)
+        {
+            return await _connection.QueryFirstOrDefaultAsync<UserEntry>(
+                "SELECT u.\"Id\", " +
+                " u.\"Email\", " +
+                "r.\"RoleType\" " +
+                "FROM \"Users\" AS u " +
+                "INNER JOIN \"Roles\" AS r " +
+                "ON u.\"RoleId\" = u.\"Id\"" +
+                " WHERE u.\"Id\" = @Id", new { Id = userId });
+        }
+        
         public async Task<Role> GetUserRole(int userId)
         {
             return await _connection.QueryFirstOrDefaultAsync<Role>(
@@ -52,5 +68,7 @@ namespace IdentityServer.Repository
                 "ON u.\"RoleId\" = u.\"Id\"" +
                 " WHERE u.\"Id\" = @Id", new { Id = userId });
         }
+
+
     }
 }
