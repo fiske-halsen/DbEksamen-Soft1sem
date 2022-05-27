@@ -33,20 +33,21 @@ namespace ApiGateway.Controllers
         }
 
         [HttpPatch("menu/menu-item/{menuItemId}")]
-        public async Task<MenuItemDTO> UpdateMenuItemFromId(int menuItemId, MenuItemDTO menuItemDTO)
+        public async Task<bool> UpdateMenuItemFromId(int menuItemId, MenuItemDTO menuItemDTO)
         {
-            throw new NotImplementedException();
+            return await _microserviceHandler.UpdateMenuItemFromId(menuItemId, menuItemDTO);
         }
 
         [HttpPost("{restaurantId}/menu/menu-item")]
-        public async Task<MenuItemDTO> AddMenuItem(int restaurantId, MenuItemDTO menuItemDTO)
+        public async Task<bool> AddMenuItem(int restaurantId, MenuItemDTO menuItemDTO)
         {
-            throw new NotImplementedException();
+            return await _microserviceHandler.AddMenuItem(restaurantId, menuItemDTO);
         }
+
         [HttpDelete("menu/menu-item/{menuItemId}")]
-        public async Task<MenuItemDTO> DeleteMenuItemFromId(int menuItemId)
+        public async Task<bool> DeleteMenuItemFromId(int menuItemId)
         {
-            throw new NotImplementedException();
+            return await _microserviceHandler.DeleteMenuItemFromID(menuItemId);
         }
 
         // --------------------------------------------- GATEWAY ---------------------------------------------
@@ -66,9 +67,21 @@ namespace ApiGateway.Controllers
         // THis one should not be a endpoint but should rather be a combined endpoint
         // with creating a order, and then make logic in microservicehandler for sending data to both mongo and post at the same time
 
+        // --------------------------------------------- NEO4J ---------------------------------------------
+        [HttpPost("order-relation")]
+        public async Task<bool> AddCustomerRestaurantRelation(OrderDTO orderDTO)
+        {
+            return await _microserviceHandler.AddCustomerRestaurantRelation(orderDTO);
+        }
+
+        [HttpGet("favorite-restaurant-type/{customerEmail}")]
+        public async Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerName(string customerEmail)
+        {
+            return await _microserviceHandler.FindFavoriteRestaurantFromCustomerEmail(customerEmail);
+        }
 
         // --------------------------------------------- MONGOAPI ---------------------------------------------
-        
+
         [HttpPost("order")]
         public async Task<bool> CreateOrder(CombinedDTO combinedDTO)
         {
