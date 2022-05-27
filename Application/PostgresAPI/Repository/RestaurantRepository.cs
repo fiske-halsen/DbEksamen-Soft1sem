@@ -40,11 +40,13 @@ namespace PostgresAPI.Repository
         private static readonly Expression<Func<Restaurant, RestaurantDTO>> AsRestaurantDto =
         x => new RestaurantDTO()
         {
+            Id = x.Id,
             RestaurantName = x.Name,
             RestaurantType = x.ResturantType.RestaurantTypeChoice.ToString(),
             StreetName = x.Address.StreetName,
             City = x.Address.CityInfo.City,
             ZipCode = x.Address.CityInfo.ZipCode
+            
         };
 
 

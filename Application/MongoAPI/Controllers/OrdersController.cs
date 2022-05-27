@@ -8,7 +8,7 @@ using MongoDB.Bson;
 namespace MongoAPI.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class OrderController : ControllerBase
     {
