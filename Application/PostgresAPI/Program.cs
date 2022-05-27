@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using PostgresAPI.Common;
 using PostgresAPI.Context;
 using PostgresAPI.Repository;
 using PostgresAPI.Services;
@@ -68,6 +69,10 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 
   var identityServer = configuration["IdentityServer:Host"];
 
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = configuration.GetConnectionString("Redis");
+});
   // Jwt tokens
   builder.Services.AddAuthentication("token")
       .AddJwtBearer("token", options =>
@@ -97,7 +102,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
   builder.Services.AddScoped<IRestaurantService, RestaurantService>();
   builder.Services.AddScoped<IUserRepository, UserRepository>();
   builder.Services.AddScoped<IUserService, UserService>();
-
+builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
 
 
 var app = builder.Build();

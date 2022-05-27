@@ -2,20 +2,23 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PostgresAPI.Common;
 using PostgresAPI.Models;
 using PostgresAPI.Services;
 
 namespace PostgresAPI.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+   // [Authorize]
     [ApiController]
     public class RestaurantsController : ControllerBase
     {
         private readonly IRestaurantService _restaurantService;
-        public RestaurantsController(IRestaurantService restaurantService)
+        private readonly IRedisCacheService _redisCacheService;
+        public RestaurantsController(IRestaurantService restaurantService, IRedisCacheService redisCacheService)
         {
             _restaurantService = restaurantService;
+            _redisCacheService = redisCacheService;
         }
         [HttpGet("")]
         public async Task<IEnumerable<RestaurantDTO>> GetAllRestaurants()
@@ -42,6 +45,7 @@ namespace PostgresAPI.Controllers
         {
             return await _restaurantService.DeleteMenuItem(menuItemId);
         }
+        
 
     }
 
