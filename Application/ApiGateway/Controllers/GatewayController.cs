@@ -20,38 +20,37 @@ namespace ApiGateway.Controllers
         }
 
         //--------------------------------------------- POSTGRESAPI ---------------------------------------------
-        [HttpGet("/restaurants")]
+        [HttpGet("restaurants")]
         public async Task<IEnumerable<RestaurantDTO>> GetAllRestaurants()
         {
             return await _microserviceHandler.GetAllRestaurants();
         }
 
-
-        [HttpGet("/{restaurantId}/menu-from-restaurant")]
+        [HttpGet("{restaurantId}/menu-from-restaurant")]
         public async Task <IEnumerable<RestaurantMenuDTO>> GetMenuFromRestaurantId(int restaurantId)
         {
             return await _microserviceHandler.GetMenuFromRestaurantId(restaurantId);
         }
 
-        [HttpPatch("/menu/menu-item/{menuItemId}")]
+        [HttpPatch("menu/menu-item/{menuItemId}")]
         public async Task<MenuItemDTO> UpdateMenuItemFromId(int menuItemId, MenuItemDTO menuItemDTO)
         {
             throw new NotImplementedException();
         }
 
-        [HttpPost("/{restaurantId}/menu/menu-item")]
+        [HttpPost("{restaurantId}/menu/menu-item")]
         public async Task<MenuItemDTO> AddMenuItem(int restaurantId, MenuItemDTO menuItemDTO)
         {
             throw new NotImplementedException();
         }
-        [HttpDelete("/menu/menu-item/{menuItemId}")]
+        [HttpDelete("menu/menu-item/{menuItemId}")]
         public async Task<MenuItemDTO> DeleteMenuItemFromId(int menuItemId)
         {
             throw new NotImplementedException();
         }
 
         // --------------------------------------------- GATEWAY ---------------------------------------------
-        [HttpPost("/login")]
+        [HttpPost("login")]
         public async Task<TokenDTO> Login(LoginUserDTO loginDto)
         {
             return await _microserviceHandler.Login(loginDto);
@@ -70,38 +69,31 @@ namespace ApiGateway.Controllers
 
         // --------------------------------------------- MONGOAPI ---------------------------------------------
         
-        [HttpPost("/order")]
+        [HttpPost("order")]
         public async Task<bool> CreateOrder(CombinedDTO combinedDTO)
         {
             return await _microserviceHandler.CreateOrder(combinedDTO);
         }
 
-        [HttpGet("/mongo/restaurant/{restaurantId}")]
+        [HttpGet("mongo/restaurant/{restaurantId}")]
         public async Task<IEnumerable<Order>> GetAllOrdersFromRestaurant(int restaurantId)
         {
             return await _microserviceHandler.GetAllOrdersFromRestaurant(restaurantId);
         }
 
-        [HttpGet("/mongo/customer/{customerEmail}")]
+        [HttpGet("mongo/customer/{customerEmail}")]
         public async Task<IEnumerable<Order>> GetOrdersFromCustomer(string customerEmail)
         {
             return await _microserviceHandler.GetOrdersFromCustomer(customerEmail);
         }
 
-        [HttpGet("/mongo/restaurant-summary/{restaurantId}")]
+        [HttpGet("mongo/restaurant-summary/{restaurantId}")]
         public async Task<IEnumerable<RestaurantItemsSummaryCount>> GetRestaurantSummary(int restaurantId)
         {
             return await _microserviceHandler.GetRestaurantSummary(restaurantId);
         }
 
-        //--------------------------------------------- NEO4JAPI ---------------------------------------------
-        //[HttpPost("/order")]
-        //public async Task AddCustomerRestaurantRelation(RelationOrderDTO relationOrderDTO)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        [HttpGet("/favorite-food-type")]
+        [HttpGet("favorite-food-type")]
         public async Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerEmail(string customerEmail)
         {
             return await _microserviceHandler.FindFavoriteRestaurantFromCustomerEmail(customerEmail);
