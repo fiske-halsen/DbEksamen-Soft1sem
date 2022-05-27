@@ -64,7 +64,6 @@ namespace ApiGateway.Service
         {
             var apiClient = ApiClientInitializer.GetClient();
 
-
             var token = await _tokenService.RequestTokenClientApplication(credentials.ClientId, credentials.ClientSecret, credentials.Scope);
 
             apiClient.SetBearerToken(token.Token.AccessToken);

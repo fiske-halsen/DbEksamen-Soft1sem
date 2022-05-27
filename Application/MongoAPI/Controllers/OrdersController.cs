@@ -8,7 +8,7 @@ using MongoDB.Bson;
 namespace MongoAPI.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class OrderController : ControllerBase
     {
@@ -17,13 +17,13 @@ namespace MongoAPI.Controllers
         public OrderController(IOrderService orderService) =>
             _orderService = orderService;
 
-        [HttpGet("/restaurant/{restaurantId}")]
+        [HttpGet("restaurant/{restaurantId}")]
         public async Task<List<Order>> GetAllOrdersFromRestaurant(int restaurantId)
         {
             return await _orderService.GetAllOrdersFromRestaurant(restaurantId);
         }
 
-        [HttpGet("/customer/{customerEmail}")]
+        [HttpGet("customer/{customerEmail}")]
         public async Task<List<Order>> GetOrdersFromCustomer(string customerEmail)
         {
             return await _orderService.GetOrdersFromCustomer(customerEmail);
@@ -35,7 +35,7 @@ namespace MongoAPI.Controllers
             return await _orderService.CreateOrder(order);
         }
 
-        [HttpGet("/restaurant-summary/{restaurantId}")]
+        [HttpGet("restaurant-summary/{restaurantId}")]
         public List<RestaurantItemsSummaryCount> GetRestaurantSummary(int restaurantId)
         {
             return _orderService.GetRestaurantItemsSummaryCount(restaurantId);
