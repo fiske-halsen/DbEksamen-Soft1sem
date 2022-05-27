@@ -1,3 +1,4 @@
+using ApiGateway.DTO;
 using ApiGateway.Models;
 using ApiGateway.Service;
 using Common.Models;
@@ -68,11 +69,11 @@ namespace ApiGateway.Controllers
 
 
         // --------------------------------------------- MONGOAPI ---------------------------------------------
-        //TODO:
-        [HttpPost("/mongo")]
-        public async Task<bool> CreateOrder(Order order)
+        
+        [HttpPost("/order")]
+        public async Task<bool> CreateOrder(CombinedDTO combinedDTO)
         {
-            return await _microserviceHandler.CreateOrder(order);
+            return await _microserviceHandler.CreateOrder(combinedDTO);
         }
 
         [HttpGet("/mongo/restaurant/{restaurantId}")]
@@ -94,11 +95,11 @@ namespace ApiGateway.Controllers
         }
 
         //--------------------------------------------- NEO4JAPI ---------------------------------------------
-        [HttpPost("/order")]
-        public async Task AddCustomerRestaurantRelation(RelationOrderDTO relationOrderDTO)
-        {
-            throw new NotImplementedException();
-        }
+        //[HttpPost("/order")]
+        //public async Task AddCustomerRestaurantRelation(RelationOrderDTO relationOrderDTO)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         [HttpGet("/favorite-food-type")]
         public async Task<FavoriteRestaurantTypeDTO> FindFavoriteRestaurantFromCustomerEmail(string customerEmail)
