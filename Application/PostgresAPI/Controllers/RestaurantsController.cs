@@ -25,22 +25,22 @@ namespace PostgresAPI.Controllers
         {
             return await _restaurantService.GetAllRestaurants();
         }
-        [HttpGet("/{restaurantId}/menu")]
+        [HttpGet("{restaurantId}/menu")]
         public async Task<RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId)
         {
             return await _restaurantService.GetMenuFromRestaurantId(restaurantId);
         }
-        [HttpPatch("/menu/menu-item/{menuItemId}")]
+        [HttpPatch("menu/menu-item/{menuItemId}")]
         public async Task<MenuItemDTO> UpdateMenuItemFromId(int menuItemId, MenuItemDTO menuItemDTO)
         {
             return await _restaurantService.UpdateMenuItem(menuItemId, menuItemDTO);
         }
-        [HttpPost("/{restaurantId}/menu/menu-item")]
+        [HttpPost("{restaurantId}/menu/menu-item")]
         public async Task<MenuItemDTO> AddMenuItem(int restaurantId, MenuItemDTO menuItemDTO)
         {
             return await _restaurantService.CreateMenuItem(menuItemDTO, restaurantId);
         }
-        [HttpDelete("/menu/menu-item/{menuItemId}")]
+        [HttpDelete("menu/menu-item/{menuItemId}")]
         public async Task <MenuItemDTO> DeleteMenuItemFromId(int menuItemId)
         {
             return await _restaurantService.DeleteMenuItem(menuItemId);
