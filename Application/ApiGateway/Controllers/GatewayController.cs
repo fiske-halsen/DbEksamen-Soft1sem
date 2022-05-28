@@ -53,7 +53,7 @@ namespace ApiGateway.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("/register")]
+        [HttpPost("register")]
         public async Task<bool> Register(RegisterUserDTO registerDto)
         {
             return await _microserviceHandler.Register(registerDto);
