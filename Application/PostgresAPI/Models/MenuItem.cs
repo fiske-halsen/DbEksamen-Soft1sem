@@ -14,5 +14,6 @@ namespace PostgresAPI.Models
         [ForeignKey("MenuId")]
         public int MenuId { get; set; }
         public Menu Menu { get; set; }
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }

@@ -9,7 +9,7 @@ using PostgresAPI.Services;
 namespace PostgresAPI.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class RestaurantsController : ControllerBase
     {

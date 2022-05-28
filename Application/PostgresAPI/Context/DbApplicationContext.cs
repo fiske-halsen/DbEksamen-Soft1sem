@@ -48,6 +48,10 @@ namespace PostgresAPI.Context
                .Property(u => u.CreatedAt)
                .HasDefaultValue(DateTime.UtcNow);
 
+            builder.Entity<MenuItem>()
+               .Property(u => u.UpdatedAt)
+               .HasDefaultValue(DateTime.UtcNow);
+
             builder.Entity<Role>().HasData(
                 new Role { Id = 1, RoleType = Common.Enums.RoleType.Customer },
                 new Role { Id = 2, RoleType = Common.Enums.RoleType.Owner }
