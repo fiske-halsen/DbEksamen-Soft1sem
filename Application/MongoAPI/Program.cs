@@ -2,6 +2,8 @@ using MongoAPI;
 using MongoAPI.Context;
 using MongoAPI.ErrorHandling;
 using MongoAPI.Services;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,24 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<DbApplicationContext>(
     builder.Configuration.GetSection("OrderDatabase"));
 
+
+var mongoClient = new MongoClient(configuration["OrderDatabase:ConnectionString"]);
+
+var database = mongoClient.GetDatabase("orders");
+var adminDb = mongoClient.GetDatabase("admin");
+var configDb = mongoClient.GetDatabase("config");
+//var dbs = Client.ListDatabaseNames().ToList();
+var databaseName = database.DatabaseNamespace.DatabaseName;
+var shardDbResult = adminDb.RunCommand<MongoDB.Bson.BsonDocument>(new MongoDB.Bson.BsonDocument() {
+    { "enableSharding",$"{databaseName}" }
+});
+var shardScript = $"{{shardCollection: \"{databaseName}.{"ordersCollection"}\"}}";
+var commandDict = new Dictionary<string, object>();
+commandDict.Add("shardCollection", $"{databaseName}.{"ordersCollection"}");
+commandDict.Add("key", new Dictionary<string, object>() { { "RestaurantId", 1 } });
+var bsonDocument = new MongoDB.Bson.BsonDocument(commandDict);
+var commandDoc = new BsonDocumentCommand<MongoDB.Bson.BsonDocument>(bsonDocument);
+var response = adminDb.RunCommand(commandDoc);
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
