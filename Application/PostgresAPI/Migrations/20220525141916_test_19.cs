@@ -9,6 +9,7 @@ namespace PostgresAPI.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreatedAt",
                 table: "Users",
