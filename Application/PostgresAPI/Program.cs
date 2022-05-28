@@ -68,6 +68,10 @@ builder.Services.AddDbContext<DbApplicationContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
 
+
+
+
+
 var identityServer = configuration["IdentityServer:Host"];
 
 builder.Services.AddStackExchangeRedisCache(options =>
@@ -97,7 +101,6 @@ builder.Services.AddAuthentication("token")
 //});
 
 builder.Services.AddAuthorization();
-
 // ------------------ Services for dependency injection ------------------------------
 builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
@@ -107,6 +110,12 @@ builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<DbApplicationContext>();
+    db.Database.Migrate();
+    db.Database.EnsureCreated();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

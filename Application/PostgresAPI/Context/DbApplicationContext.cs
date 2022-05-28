@@ -60,12 +60,12 @@ namespace PostgresAPI.Context
                 new User { Id = 3, Email = "Restaurant@Ejer2.dk", Name = "Restaurant2", LastName = "Ejer2", Password = BCrypt.Net.BCrypt.HashPassword("1234"), PhoneNumber = "44334432", RoleId = 2 }
                 );
             builder.Entity<CityInfo>().HasData(
-                new CityInfo { Id = 1, City = "Staden", ZipCode = "2500" }
+                new CityInfo { Id = 1, City = "Gentofte", ZipCode = "2920" }
 
                 );
             builder.Entity<Address>().HasData(
-                new Address { Id = 1, CityInfoId = 1, StreetName = "PusherStreet" },
-                new Address { Id = 2, CityInfoId = 1, StreetName = "NemoLand" }
+                new Address { Id = 1, CityInfoId = 1, StreetName = "Skovvej" },
+                new Address { Id = 2, CityInfoId = 1, StreetName = "Hovmarksvej" }
 
                 );
 
