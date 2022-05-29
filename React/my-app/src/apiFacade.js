@@ -27,11 +27,12 @@ const logout = () => {
 
 async function login(userName, password) {
   const formData = new URLSearchParams();
+  console.log('userName', userName)
   formData.append("grant_type", "password");
   formData.append("client_id", "ApiGateWayClient");
   formData.append("client_secret", "86d677d3-ffee-4a6d-85ab-e000894768e6");
   formData.append("scope", "GatewayServiceAPI");
-  formData.append("username", userName);
+  formData.append("userName", userName);
   formData.append("password", password);
 
   return await fetch(`https://localhost:7292/connect/token`, {
@@ -61,10 +62,15 @@ const fetchMenuByRestId = (restId) => {
 };
 
 const createOrder = (order) => {
-  console.log(order)
   const options = makeOptions("POST", true, order);
   return fetch("https://localhost:7236/Gateway/order", options).then(handleHttpErrors);
 };
+
+const register = (registerCredentials) => {
+  const options = makeOptions("POST", true, registerCredentials);
+  return fetch("https://localhost:7236/Gateway/register", options).then(handleHttpErrors);
+
+}
 
 const getEmail = () => {
   let myToken = getToken();
@@ -112,7 +118,8 @@ var facade = {
   fetchAllRest,
   fetchMenuByRestId,
   getEmail,
-  createOrder
+  createOrder,
+  register
 };
 
 export { facade };
