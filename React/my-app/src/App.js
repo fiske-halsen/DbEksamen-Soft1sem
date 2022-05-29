@@ -6,7 +6,7 @@ import Register from "./Components/Register"
 import Restaurants from "./Components/Restaurants"
 import RestaurantMenu from "./Components/RestaurantMenu"
 import Login, { LoggedIn } from "./Components/Login";
-import loginIdentity from "./apiFacade"
+import {facade} from "./apiFacade"
 
 import React, {
   useState
@@ -27,8 +27,13 @@ function App() {
     setLoggedIn(false);
   };
 
-  async function login (user, pass)  {
-    setLoggedIn(true)
+ function login (user, pass)  {
+  facade
+  .login(user, pass)
+  .then((res) => setLoggedIn(true), setError(""))
+  .catch((err) => {
+    err.fullError.then((e) => setError(e.message));
+  });
   };
 
   return (

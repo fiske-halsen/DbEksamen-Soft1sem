@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { URL } from "../settings";
-import login from "../apiFacade"
 
 function Login({login}){
     const init = {username: "Username", password: "Password"}
