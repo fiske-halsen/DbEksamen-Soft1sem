@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { URL } from "../settings";
-import loginIdentity from "../apiFacade"
+import login from "../apiFacade"
 
 function Login({login}){
     const init = {username: "Username", password: "Password"}
@@ -8,7 +8,7 @@ function Login({login}){
 
     const performLogin = (evt) => {
         evt.preventDefault();
-        loginIdentity(loginCredentials.username, loginCredentials.password);
+        login(loginCredentials.username, loginCredentials.password);
       };
 
     const onChange = (evt) => {

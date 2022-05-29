@@ -28,23 +28,17 @@ function App() {
   };
 
   async function login (user, pass)  {
-    console.log("hello")
-    //await login(user, pass)
-    
     setLoggedIn(true)
-    
-      
   };
 
   return (
     <div>
     <Header></Header>
-   
    <Routes>
    <Route exact path="/">
         </Route>
         {!loggedIn ? (
-            <Route exact  path="/login" element={<Login login={login} />}>
+            <Route exact path="/login" element={<Login login={login} />}>
             </Route>
         ) : (
               <Route exact path="/login" element={<LoggedIn />}>
