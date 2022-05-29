@@ -21,6 +21,10 @@ function App() {
     setLoggedIn(false);
   };
 
+  function fetchAllRest () {
+    facade.fetchAllRest();
+  };
+
   function login(user, pass) {
     facade
       .login(user, pass)
@@ -35,11 +39,20 @@ function App() {
       <Header></Header>
       <Routes>
         <Route exact path="/"></Route>
+        <Route path="/restaurants" element={<Restaurants  />}>
+          <Route path=":restaurantId" element={<RestaurantMenu />} />
+        </Route>
+
+
+
+
+
         {!loggedIn ? (
           <Route exact path="/login" element={<Login login={login} />} />
         ) : (
           <Route exact path="/login" element={<LoggedIn logout={logout} />} />
         )}
+        
       </Routes>
     </div>
   );
