@@ -11,18 +11,15 @@ function RestaurantMenu(){
     const [menu, setMenu] = useState({menu: []});
     const [orderItems, setOrderItems] = useState([])
     const [restaurants, setRestaurants] = useState([])
-    const [restaurantName, setRestaurantName] = useState("")
-    const [restaurantType, setRestaurantType] = useState("")
+    const [restInfo, setRestInfo] = useState({})
 
 
 useEffect(() => {
-    console.log("DILLER")
     facade.fetchAllRest().then((data) => {
         setRestaurants(data)
-      });
+      }); 
   }, []);
 
-    
     function addToOrder(e){
         e.preventDefault()
         let menuItemName = e.currentTarget.id
@@ -30,42 +27,40 @@ useEffect(() => {
             if(x.menuItemName === menuItemName){
                 setOrderItems([
                     ...orderItems, {
-                        "menuItemName": x.menuItemName,
+                        "name": x.menuItemName,
                         "price": x.price,
                         "menuItemType": x.menuItemType
                     }
                 ])
             }
-        } )
-        console.log(orderItems)
+        })
     }
+
     function order (){
         restaurants.forEach((x) => {
             if(x.id == restaurantId){
-                console.log("HER MAND: " + x.id + "    " + restaurantId)
-                setRestaurantName(x.restaurantName)
-                setRestaurantType(x.restaurantType)
-                
+              console.log("x ", x)
+              console.log("ItemName ", x.restaurantName)
+              console.log("ItemType ", x.restaurantType)
+              let customerEmail = facade.getEmail()
+              facade.createOrder({
+                  customerEmail: customerEmail,
+                  restaurantName: x.restaurantName,
+                  restaurantType: x.restaurantType,
+                  restaurantId: restaurantId,
+                  items: orderItems
+                })              
             }
         })
-
-
-        let customerEmail = facade.getEmail()
-        facade.createOrder({
-            customerEmail: customerEmail,
-            restaurantName: restaurantName,
-            restaurantType: restaurantType,
-            restaurantId: restaurantId,
-            items: orderItems
-            
-          })
+        setOrderItems([])
     }
-    
     
     useEffect(() => {
         facade.fetchMenuByRestId(restaurantId).then((data) => {
             setMenu(data)
+            console.log(data)
           });
+
       }, [restaurantId]);
     return(
         <div>
@@ -84,13 +79,12 @@ useEffect(() => {
               <td>
                   <button id = {menuItem.menuItemName} onClick = {addToOrder}>Add To Order </button>
               </td>
-              
             </tr>
           ))}
         </thead>
         <tbody>{/*Add the rows here */}</tbody>
       </table>
-      <button onClick = {order} >Bestil</button>
+      <button onClick = {order}> Bestil</button>
       <h2>Din Ordre:</h2>
       <table className="table">
         <thead>
@@ -100,8 +94,8 @@ useEffect(() => {
             <th>Type</th>
           </tr>
           {orderItems.map((menuItem) => (
-            <tr key={menuItem.menuItemName}>
-              <td>{menuItem.menuItemName}</td>
+            <tr key={menuItem.name}>
+              <td>{menuItem.name}</td>
               <td>{menuItem.price}</td>
               <td>{menuItem.menuItemType}</td>
               <td>

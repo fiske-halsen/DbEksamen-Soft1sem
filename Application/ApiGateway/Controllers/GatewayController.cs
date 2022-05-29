@@ -17,7 +17,6 @@ namespace ApiGateway.Controllers
         {
             _microserviceHandler = mircoserviceHandler;
         }
-
         //--------------------------------------------- POSTGRESAPI ---------------------------------------------
         [HttpGet("restaurants")]
         public async Task<IEnumerable<RestaurantDTO>> GetAllRestaurants()
