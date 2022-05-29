@@ -67,11 +67,6 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<DbApplicationContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
-
-
-
-
-
 var identityServer = configuration["IdentityServer:Host"];
 
 builder.Services.AddStackExchangeRedisCache(options =>
@@ -107,6 +102,7 @@ builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
+
 
 var app = builder.Build();
 

@@ -1,24 +1,19 @@
 ﻿using Common.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PostgresAPI.Common;
-using PostgresAPI.Models;
 using PostgresAPI.Services;
 
 namespace PostgresAPI.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class RestaurantsController : ControllerBase
     {
         private readonly IRestaurantService _restaurantService;
-        private readonly IRedisCacheService _redisCacheService;
-        public RestaurantsController(IRestaurantService restaurantService, IRedisCacheService redisCacheService)
+        public RestaurantsController(IRestaurantService restaurantService)
         {
             _restaurantService = restaurantService;
-            _redisCacheService = redisCacheService;
         }
         [HttpGet("")]
         public async Task<IEnumerable<RestaurantDTO>> GetAllRestaurants()
@@ -29,6 +24,11 @@ namespace PostgresAPI.Controllers
         public async Task<RestaurantMenuDTO> GetMenuFromRestaurantId(int restaurantId)
         {
             return await _restaurantService.GetMenuFromRestaurantId(restaurantId);
+        }
+        [HttpGet("owner/{ownerId}/menu")]
+        public async Task<RestaurantMenuDTO> GetMenuFromOwnerId(int ownerId)
+        {
+            return await _restaurantService.GetMenuByOwnerId(ownerId);
         }
         [HttpPatch("menu/menu-item/{menuItemId}")]
         public async Task<MenuItemDTO> UpdateMenuItemFromId(int menuItemId, MenuItemDTO menuItemDTO)

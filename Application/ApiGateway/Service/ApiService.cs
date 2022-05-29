@@ -1,4 +1,5 @@
 ﻿using ApiGateway.Models;
+using Common.ErrorHandling;
 using Common.HttpUtils;
 using IdentityModel.Client;
 using Newtonsoft.Json;
@@ -41,7 +42,8 @@ namespace ApiGateway.Service
                 }
                 else
                 {
-                    throw new Exception("Not working");
+                    var exception = JsonConvert.DeserializeObject<ExceptionDTO>(response.Content.ToString());
+                    throw new HttpStatusException(exception.StatusCode, exception.Message);
                 }
             }
         }
@@ -73,7 +75,8 @@ namespace ApiGateway.Service
                 }
                 else
                 {
-                    throw new Exception("Not working");
+                    var exception = JsonConvert.DeserializeObject<ExceptionDTO>(response.Content.ToString());
+                    throw new HttpStatusException(exception.StatusCode, exception.Message);
                 }
             }
         }
@@ -96,7 +99,14 @@ namespace ApiGateway.Service
 
             using (var response = await apiClient.PostAsync(url, httpContent))
             {
-                return response.IsSuccessStatusCode;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                } else
+                {
+                    var exception = JsonConvert.DeserializeObject<ExceptionDTO>(response.Content.ToString());
+                    throw new HttpStatusException(exception.StatusCode, exception.Message);
+                }
             }
         }
 
@@ -121,8 +131,15 @@ namespace ApiGateway.Service
 
             using (var response = await apiClient.SendAsync(request))
             {
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
 
-                return response.IsSuccessStatusCode;
+                } else
+                {
+                    var exception = JsonConvert.DeserializeObject<ExceptionDTO>(response.Content.ToString());
+                    throw new HttpStatusException(exception.StatusCode, exception.Message);
+                }
             }
         }
 
@@ -142,9 +159,16 @@ namespace ApiGateway.Service
 
             using (var response = await apiClient.DeleteAsync(url))
             {
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                } else
+                {
+                    var exception = JsonConvert.DeserializeObject<ExceptionDTO>(response.Content.ToString());
+                    throw new HttpStatusException(exception.StatusCode, exception.Message);
+                }
                 return response.IsSuccessStatusCode;
             }
-
         }
     }
 }

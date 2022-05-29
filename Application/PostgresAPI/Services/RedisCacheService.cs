@@ -1,14 +1,14 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 
-namespace PostgresAPI.Common
+namespace PostgresAPI.Services
 {
     public interface IRedisCacheService
     {
         T Get<T>(string key);
         T Set<T>(string key, T value);
-
     }
+
     public class RedisCacheService : IRedisCacheService
     {
         private readonly IDistributedCache _cache;
@@ -42,5 +42,7 @@ namespace PostgresAPI.Common
 
             return value;
         }
+
+
     }
 }

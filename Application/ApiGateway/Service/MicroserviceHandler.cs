@@ -1,6 +1,7 @@
 ﻿using ApiGateway.DTO;
 using ApiGateway.Models;
 using Common.Models;
+using System.Security.Claims;
 using System.Text.Json;
 
 namespace ApiGateway.Service
@@ -20,6 +21,7 @@ namespace ApiGateway.Service
         public Task<bool> UpdateMenuItemFromId(int menuItemId, MenuItemDTO menuItemDTO);
         public Task<bool> AddMenuItem(int restaurantId, MenuItemDTO menuItemDTO);
         public Task<bool> DeleteMenuItemFromID(int menuItemId);
+        public Task<RestaurantMenuDTO> GetMenuByOwnerId();
 
     }
     public class MicroserviceHandler : IMircoserviceHandler
@@ -35,12 +37,14 @@ namespace ApiGateway.Service
         private readonly ApplicationCredentials _mongoDBClientCredentials;
         private readonly ApplicationCredentials _neo4jClientCredentials;
         private readonly TokenService _tokenService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public MicroserviceHandler(
             ApiService apiService,
             IConfiguration configuration,
             HelperService helperService,
-            TokenService tokenService)
+            TokenService tokenService,
+            IHttpContextAccessor httpContextAccesor)
         {
             _apiService = apiService;
             _configuration = configuration;
@@ -49,6 +53,7 @@ namespace ApiGateway.Service
             _mongoDBClientCredentials = _helperService.GetMicroserviceClientCredentials(HelperService.ClientType.MongoClient);
             _neo4jClientCredentials = _helperService.GetMicroserviceClientCredentials(HelperService.ClientType.Neo4jClient);
             _tokenService = tokenService;
+            _httpContextAccessor = httpContextAccesor;
         }
 
         //--------------------------------------------- POSTGRESAPI ---------------------------------------------
@@ -207,6 +212,10 @@ namespace ApiGateway.Service
             return await _apiService.Get<RestaurantItemsSummaryCount>(_MONGOAPI_BASE_URL + "/restaurant-summary/" + restaurantId, _mongoDBClientCredentials);
         }
 
-       
+        public async Task<RestaurantMenuDTO> GetMenuByOwnerId()
+        {
+            var ownerId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return await _apiService.GetSingle<RestaurantMenuDTO>(_POSTGRESAPI_BASE_URL_RESTAURANTS + "/owner/" + ownerId + "/menu", _postgresClientCredentials);
+        }
     }
 }

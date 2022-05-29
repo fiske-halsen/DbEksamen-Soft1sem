@@ -1,4 +1,5 @@
 using ApiGateway.Authorization;
+using ApiGateway.ErrorHandling;
 using ApiGateway.Service;
 using Microsoft.AspNetCore.Authorization;
 using static ApiGateway.Authorization.OwnerRequirement;
@@ -18,7 +19,6 @@ builder.Services.AddHttpContextAccessor();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 
 builder.Services.AddScoped<ApiService>();
 builder.Services.AddScoped<IMircoserviceHandler, MicroserviceHandler>();
@@ -62,7 +62,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.ConfigureExceptionHandler();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

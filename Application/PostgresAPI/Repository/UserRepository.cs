@@ -27,11 +27,20 @@ namespace PostgresAPI.Repository
                 .FirstOrDefaultAsync(); 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<User> GetUserById(int userId)
         {
             return await _applicationContext.Users.FindAsync(userId);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="registerUserDTO"></param>
+        /// <returns></returns>
         public async Task<Response> Register(RegisterUserDTO registerUserDTO)
         {
             User user = new User()

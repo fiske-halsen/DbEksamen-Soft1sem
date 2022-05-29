@@ -12,32 +12,24 @@ namespace PostgresAPI.Repository
 {
     public interface IRestaurantRepository
     {
-        public Task<IEnumerable<RestaurantDTO>> GetAllRestaurants();
+        public Task<List<RestaurantDTO>> GetAllRestaurants();
         public Task<RestaurantMenuDTO> GetMenuFromRestaurantId(Restaurant restaurant);
         public Task<MenuItemDTO> UpdateMenuItem(MenuItem menuItem, MenuItemDTO menuItemDTO);
         public Task<MenuItemDTO> CreateMenuItem(MenuItemDTO menuItemDTO, int restaurantId);
         public Task<MenuItemDTO> DeleteMenuItem(MenuItem menuItem);
         public Task<Restaurant> GetRestaurantById(int restaurantId);
         public Task<MenuItem> GetMenuItemFromId(int menuItemId);
+        public Task<RestaurantMenuDTO> GetMenuByOwnerId(User user); 
+
     }
     public class RestaurantRepository : IRestaurantRepository
     {
         private readonly DbApplicationContext _applicationContext;
         private readonly IConfiguration _configuration;
-        private readonly IRedisCacheService _redisCacheService;
-        private readonly IDatabase _redisDatabase;
-        private readonly IServer _redisServer;
 
-        public RestaurantRepository(
-            DbApplicationContext applicationContext,
-            IRedisCacheService redisCacheService,
-            IConfiguration configuration)
+        public RestaurantRepository( DbApplicationContext applicationContext)
         {
             _applicationContext = applicationContext;
-            _redisCacheService = redisCacheService;
-            _configuration = configuration;
-            _redisDatabase = RedisConnector.Connector.Connection.GetDatabase();
-            _redisServer = RedisConnector.Connector.Connection.GetServer(_configuration.GetConnectionString("Redis"));
         }
 
         private static readonly Expression<Func<MenuItem, MenuItemDTO>> AsMenuItemDto =
@@ -85,9 +77,6 @@ namespace PostgresAPI.Repository
             await _applicationContext.MenuItems.AddAsync(menuItem);
             await _applicationContext.SaveChangesAsync();
 
-            // REDIS CLEAR CACHE SINCE WE ADDED NEW ITEM FOR THAT RESTAURANT
-            _redisDatabase.KeyDelete(restaurantId.ToString());
-
             return new MenuItemDTO
             {
                 MenuItemName = menuItem.Name,
@@ -103,7 +92,6 @@ namespace PostgresAPI.Repository
         /// <returns></returns>
         public async Task<MenuItemDTO> DeleteMenuItem(MenuItem menuItem)
         {
-
             MenuItemDTO tmpMenuItem = new MenuItemDTO
             {
                 MenuItemName = menuItem.Name,
@@ -121,24 +109,21 @@ namespace PostgresAPI.Repository
         /// Get all restaurants
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<RestaurantDTO>> GetAllRestaurants()
+        public async Task<List<RestaurantDTO>> GetAllRestaurants()
         {
             return await
-                _applicationContext.
-                Restaurants.
-                Select(AsRestaurantDto).
-                ToListAsync();
+            _applicationContext.
+            Restaurants.
+            Select(AsRestaurantDto).
+            ToListAsync();
         }
+
         public async Task<MenuItem> GetMenuItemFromId(int menuItemId)
         {
-
-            var menuItem =
-               await _applicationContext.
-               MenuItems
-             .Include(x => x.MenuItemType).
-            FirstOrDefaultAsync(x => x.Id == menuItemId);
-
-            return menuItem;
+            return await _applicationContext.
+                    MenuItems
+                    .Include(x => x.MenuItemType).
+                    FirstOrDefaultAsync(x => x.Id == menuItemId);
         }
 
         public async Task<Restaurant> GetRestaurantById(int restaurantId)
@@ -158,24 +143,12 @@ namespace PostgresAPI.Repository
         /// <returns></returns>
         public async Task<RestaurantMenuDTO> GetMenuFromRestaurantId(Restaurant restaurant)
         {
-            var redisData = _redisCacheService.Get<string>(restaurant.Id.ToString());
-
-            List<MenuItemDTO> menuItems;
-            if (redisData == null)
-            {
-                menuItems =
-                await _applicationContext.
-                MenuItems.
-                Where(x => x.Menu.Restaurant.Id == restaurant.Id).
-                Select(AsMenuItemDto)
-               .ToListAsync();
-
-                _redisCacheService.Set<string>(restaurant.Id.ToString(), JsonSerializer.Serialize(menuItems));
-            }
-            else
-            {
-                menuItems = JsonSerializer.Deserialize<List<MenuItemDTO>>(redisData);
-            }
+            var menuItems =
+             await _applicationContext.
+             MenuItems.
+             Where(x => x.Menu.Restaurant.Id == restaurant.Id).
+             Select(AsMenuItemDto)
+            .ToListAsync();
 
             return new RestaurantMenuDTO()
             {
@@ -192,7 +165,6 @@ namespace PostgresAPI.Repository
         /// <returns></returns>
         public async Task<MenuItemDTO> UpdateMenuItem(MenuItem menuItem, MenuItemDTO menuItemDTO)
         {
-
             menuItem.Price = menuItemDTO.Price;
             menuItem.Name = menuItemDTO.MenuItemName;
             menuItem.MenuItemType = menuItem.MenuItemType;
@@ -203,6 +175,29 @@ namespace PostgresAPI.Repository
                 MenuItemName = menuItem.Name,
                 MenuItemType = menuItem.MenuItemType.MenuItemTypeChoice.ToString(),
                 Price = menuItem.Price
+            };
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ownerId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<RestaurantMenuDTO> GetMenuByOwnerId(User user)
+        {
+            var menuItems =
+               await _applicationContext.MenuItems
+               .Include(x => x.Menu)
+               .Include(x => x.Menu.Restaurant)
+               .Include(x => x.Menu.Restaurant.User)
+               .Where(x => x.Menu.Restaurant.User.Id == user.Id)
+               .Select(AsMenuItemDto)
+               .ToListAsync();
+
+            return new RestaurantMenuDTO()
+            {
+                Menu = menuItems
             };
         }
     }

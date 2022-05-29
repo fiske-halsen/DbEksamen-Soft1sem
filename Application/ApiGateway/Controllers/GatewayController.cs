@@ -32,6 +32,13 @@ namespace ApiGateway.Controllers
         }
 
         [Authorize(Policy = "OwnerOnly")]
+        [HttpGet("owner/menu-from-restaurant")]
+        public async Task<RestaurantMenuDTO> GetMenuItemFromOwner()
+        {
+            return await _microserviceHandler.GetMenuByOwnerId();
+        }
+
+        [Authorize(Policy = "OwnerOnly")]
         [HttpPatch("menu/menu-item/{menuItemId}")]
         public async Task<bool> UpdateMenuItemFromId(int menuItemId, MenuItemDTO menuItemDTO)
         {
