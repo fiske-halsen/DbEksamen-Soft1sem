@@ -17,7 +17,7 @@ const getToken = () => {
 
 const loggedIn = () => {
   const loggedIn = getToken() != null;
-
+console.log(loggedIn)
   return loggedIn;
 };
 
@@ -49,14 +49,39 @@ async function login(userName, password) {
       setToken(res.access_token);
     });
 }
+const fetchAllRest = () => {
+  const options = makeOptions("GET", true);
+  return fetch("https://localhost:7236/Gateway/restaurants", options).then(handleHttpErrors);
+};
 
+const fetchMenuByRestId = (restId) => {
+  const options = makeOptions("GET", true);
+
+  return fetch("https://localhost:7236/Gateway/" + restId + "/menu-from-restaurant", options).then(handleHttpErrors);
+};
+
+const createOrder = (order) => {
+  console.log(order)
+  const options = makeOptions("POST", true, order);
+  return fetch("https://localhost:7236/Gateway/order", options).then(handleHttpErrors);
+};
+
+const getEmail = () => {
+  let myToken = getToken();
+  let tokenData = myToken.split(".")[1];
+  let decoedeJsonData = window.atob(tokenData);
+  let decodedJwtData = JSON.parse(decoedeJsonData);
+  let email = decodedJwtData.Email;
+  console.log(email);
+
+  return email;
+};
 const getRole = () => {
   let myToken = getToken();
   let tokenData = myToken.split(".")[1];
   let decoedeJsonData = window.atob(tokenData);
   let decodedJwtData = JSON.parse(decoedeJsonData);
   let role = decodedJwtData.roles;
-  console.log(role);
 
   return role;
 };
@@ -67,20 +92,27 @@ const makeOptions = (method, addToken, body) => {
     headers: {
       "Content-type": "application/json",
       Accept: "application/json",
+      
     },
   };
   if (addToken && loggedIn()) {
-    opts.headers["x-access-token"] = getToken();
+    opts.headers["Authorization"] = `Bearer ${getToken()}`;
   }
   if (body) {
     opts.body = JSON.stringify(body);
   }
   return opts;
+
+  
 };
 
 var facade = {
   login,
   logout,
+  fetchAllRest,
+  fetchMenuByRestId,
+  getEmail,
+  createOrder
 };
 
 export { facade };
