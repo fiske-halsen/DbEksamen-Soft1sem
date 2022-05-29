@@ -25,7 +25,7 @@ function handleHttpErrors(res) {
     localStorage.removeItem("jwtToken");
   };
 
-export default function login (userName, password)  {
+export default async function login (userName, password)  {
 
   const formData = new URLSearchParams();
   formData.append('grant_type', 'password');

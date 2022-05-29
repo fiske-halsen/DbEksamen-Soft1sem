@@ -27,12 +27,13 @@ function App() {
     setLoggedIn(false);
   };
 
-  const login = (user, pass) => {
-      login(user, pass)
-      .then((res) => setLoggedIn(true), setError(""))
-      .catch((err) => {
-        setError("Wrong username or password");
-      });
+  async function login (user, pass)  {
+    console.log("hello")
+    //await login(user, pass)
+    
+    setLoggedIn(true)
+    
+      
   };
 
   return (
@@ -40,15 +41,16 @@ function App() {
     <Header></Header>
    
    <Routes>
-     
-
-     
-            
-           
-              
+   <Route exact path="/">
+        </Route>
+        {!loggedIn ? (
+            <Route exact  path="/login" element={<Login login={login} />}>
+            </Route>
+        ) : (
+              <Route exact path="/login" element={<LoggedIn />}>
+              </Route>
+        )}
       </Routes>
-
-
       </div>
 
     );
