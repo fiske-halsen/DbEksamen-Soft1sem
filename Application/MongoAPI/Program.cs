@@ -35,6 +35,8 @@ commandDict.Add("key", new Dictionary<string, object>() { { "RestaurantId", 1 } 
 var bsonDocument = new MongoDB.Bson.BsonDocument(commandDict);
 var commandDoc = new BsonDocumentCommand<MongoDB.Bson.BsonDocument>(bsonDocument);
 var response = adminDb.RunCommand(commandDoc);
+
+
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
@@ -84,6 +86,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.ConfigureExceptionHandler();
+app.UseCors(x => x
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowed(origin => true) // allow any origin
+                                                        //.WithOrigins("https://localhost:44351")); // Allow only this origin can also have multiple origins separated with comma
+                    .AllowCredentials()); // allow credentials
+
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

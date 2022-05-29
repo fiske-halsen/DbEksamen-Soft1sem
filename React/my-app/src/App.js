@@ -6,7 +6,8 @@ import Register from "./Components/Register"
 import Restaurants from "./Components/Restaurants"
 import RestaurantMenu from "./Components/RestaurantMenu"
 import Login, { LoggedIn } from "./Components/Login";
-import apiFacade from "./apiFacade"
+import loginIdentity from "./apiFacade"
+
 import React, {
   useState
 } from "react";
@@ -22,13 +23,12 @@ function App() {
   //const [role, setRole] = useState("");
 
   const logout = () => {
-    apiFacade.logout();
+   // apiFacade.logout();
     setLoggedIn(false);
   };
 
   const login = (user, pass) => {
-    apiFacade
-      .login(user, pass)
+      login(user, pass)
       .then((res) => setLoggedIn(true), setError(""))
       .catch((err) => {
         setError("Wrong username or password");
@@ -36,16 +36,21 @@ function App() {
   };
 
   return (
-        <Routes>
-          {!loggedIn ? (
-            <Route exact path="/" element={
-              <Login login={login} animate={true}/>
+    <div>
+    <Header></Header>
+   
+   <Routes>
+     
+
+     
             
-          }/>
-        ) : (
-          <Route exact path="/" element={<LoggedIn/>}/>
-        )}
-        </Routes>
+           
+              
+      </Routes>
+
+
+      </div>
+
     );
   }
   export default App;

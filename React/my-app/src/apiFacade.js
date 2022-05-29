@@ -6,8 +6,6 @@ function handleHttpErrors(res) {
   }
   return res.json();
 }
-
-export default function apiFacade() {
   /* Insert utility-methods from a latter step (d) here (REMEMBER to uncomment in the returned object when you do)*/
   const setToken = (token) => {
     localStorage.setItem("jwtToken", token);
@@ -27,16 +25,29 @@ export default function apiFacade() {
     localStorage.removeItem("jwtToken");
   };
 
-  const login = (user, password) => {
-    const options = makeOptions("POST", true, {
-      username: user,
-      password: password,
-    });
+export default function login (userName, password)  {
 
-    return fetch(URL + "/api/login", options)
+  const formData = new URLSearchParams();
+  formData.append('grant_type', 'password');
+  formData.append('client_id', 'ApiGateWayClient');
+  formData.append('client_secret', '86d677d3-ffee-4a6d-85ab-e000894768e6');
+  formData.append('scope', 'GatewayServiceAPI');
+  formData.append('username', userName);
+  formData.append('password', password);
+
+    return fetch(`https://localhost:7292/connect/token`, {
+      method: 'POST',
+      headers: {
+        // "Content-Type": "application/json; charset=utf-8",
+        "Content-Type": "application/x-www-form-urlencoded",
+    },
+      body: formData.toString(),
+      json: true,
+    })
       .then(handleHttpErrors)
       .then((res) => {
-        setToken(res.token);
+        console.log(res)
+        setToken(res.access_token);
       });
   };
 
@@ -126,21 +137,5 @@ export default function apiFacade() {
     return opts;
   };
 
-  return {
-    makeOptions,
-    setToken,
-    getToken,
-    loggedIn,
-    login,
-    logout,
-    fetchData,
-    getRole,
-    fetchContacts,
-    createContact,
-    findContact,
-    editContact,
-    deleteContact,
-    addOpportunity,
-    getOpportunitiesFromContact,
-  };
-}
+
+
