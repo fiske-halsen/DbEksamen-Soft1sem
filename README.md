@@ -9,3 +9,6 @@
 
 ## Instruction guide
 
+### Step 1
+
+Clone the repository
