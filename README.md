@@ -19,3 +19,12 @@ The file is located in the Docker folder called *Script.sh* as shown below in th
 │   └── Script.sh
 └── README.md
 ```
+
+**Step 2: Open the project solution containing the application in Visual Studio 2022**
+
+```
+.
+├── Application
+│   └── ProjectSolution.sln
+
+```
