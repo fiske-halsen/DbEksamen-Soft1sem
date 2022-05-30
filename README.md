@@ -9,6 +9,6 @@
 
 ### Setup
 
-**Step 1: Start all of the containers**
+**Step 1: Run the script running all the docker files**
 
 Clone the repository
