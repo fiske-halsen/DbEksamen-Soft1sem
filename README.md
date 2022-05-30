@@ -10,6 +10,7 @@
 ### Setup
 
 **Step 1: Run the script running all the docker files**
+The file is located in the Docker folder called *Script.sh* as shown below in the directory tree:
 
 ```
 .
