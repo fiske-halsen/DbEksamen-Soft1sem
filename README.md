@@ -7,7 +7,7 @@
 * Phillip Thomas Isenborg Andersen, cph-pa124@cphbusiness.dk
 
 
-## Instruction guide
+## Setup
 
 ### Step 1
 
