@@ -1,6 +1,6 @@
 # Database project 2022 - Take away application 
 
-#### Made by ####
+#### Made by: ####
 
 * Lukas Bang-Stoltz Andersen, cph-ls369@cphbusiness.dk
 * Sebastian Godsk Hansen, cph-sh497@cphbusiness.dk 
@@ -8,3 +8,4 @@
 
 
 ## Instruction guide
+
