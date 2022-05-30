@@ -97,6 +97,13 @@ namespace ApiGateway.Controllers
         {
             return await _microserviceHandler.GetRestaurantSummary(restaurantId);
         }
+        [AllowAnonymous]
+        [HttpGet("test-data")]
+        public async Task SetUpTestData()
+        {
+             await _microserviceHandler.SetUpTestData();
+        }
         
+
     }
 }
