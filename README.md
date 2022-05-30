@@ -7,8 +7,8 @@
 * Phillip Thomas Isenborg Andersen, cph-pa124@cphbusiness.dk
 
 
-## Setup
+### Setup
 
-### Step 1
+**Step 1: Start all of the containers**
 
 Clone the repository
