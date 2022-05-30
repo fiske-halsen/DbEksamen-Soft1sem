@@ -1,6 +1,6 @@
 # Database project 2022 - Take away application 
 
-> :warning: **React client is not fully working so it is advised to use Postman instead or the built in swagger which comes with ASP.NET to test the different endpoints**
+> :warning: **React client is not finished so it is advised to use Postman instead or the built in swagger which comes with ASP.NET to test the different endpoints**
 
 #### Made by: ####
 
