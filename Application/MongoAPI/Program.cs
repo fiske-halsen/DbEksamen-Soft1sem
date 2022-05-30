@@ -17,7 +17,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<DbApplicationContext>(
     builder.Configuration.GetSection("OrderDatabase"));
 
-
 var mongoClient = new MongoClient(configuration["OrderDatabase:ConnectionString"]);
 
 var database = mongoClient.GetDatabase("orders");
