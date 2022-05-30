@@ -1,5 +1,7 @@
 # Database project 2022 - Take away application 
 
+> :warning: **If you are using mobile browser**: Be very careful here!
+
 #### Made by: ####
 
 * Lukas Bang-Stoltz Andersen, cph-ls369@cphbusiness.dk
@@ -35,7 +37,7 @@ We have made a endpoint setting up test data for orders in mongoDB if needed whi
 
 *https://localhost:7236/Gateway/test-data*
 
-> **WARNING**: Be careful, or else!
+
 
 
 
