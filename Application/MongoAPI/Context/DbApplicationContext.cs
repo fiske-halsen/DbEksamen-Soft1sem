@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Common.Models;
+using Microsoft.Extensions.Configuration;
 using Mongo.Migration.Startup.Static;
 using Mongo2Go;
 using MongoDB.Bson;
@@ -11,17 +12,70 @@ namespace MongoAPI.Context
         public string ConnectionString { get; set; } = null!;
         public string DatabaseName { get; set; } = null!;
         public string CollectionName { get; set; } = null!;
+        private readonly IMongoCollection<Order> _ordersCollection;
+        private readonly IConfiguration _configuration;
 
-        public void Migration(IConfiguration configuration)
+        public DbApplicationContext(IConfiguration configuration)
         {
-            // Init MongoDB
-            var runner = MongoDbRunner.Start(); // Mongo2Go
-            var client = new MongoClient(runner.ConnectionString);
+            _configuration = configuration;
 
-            // Init MongoMigration
-            MongoMigrationClient.Initialize(client);
+            var mongoClient = new MongoClient(_configuration["OrderDatabase:ConnectionString"]);
 
-            client.GetDatabase("MyDatabase").DropCollection("MyCollection");
+            var mongoDatabase = mongoClient.GetDatabase(_configuration["OrderDatabase:DatabaseName"]);
+
+            _ordersCollection = mongoDatabase.GetCollection<Order>(_configuration["OrderDatabase:CollectionName"]);
+        }
+
+        public void Migration()
+        {
+            var random = new Random();
+
+            var MenuItems1 = new List<Item>()
+            {
+                new Item { Name = "salatpizza", Price = 79.99},
+                new Item { Name = "Peperoni", Price = 79.23},
+                new Item { Name = "Calzone", Price = 89.99},
+                new Item { Name = "ChokoladeIs", Price = 39.99 },
+                new Item { Name = "vaniljeis", Price = 39.99, },
+                new Item { Name = "chokoladekage", Price = 39.99,  },
+                new Item { Name = "Cola", Price = 19.99},
+                new Item { Name = "Fanta", Price = 19.99, },
+                new Item { Name = "Mayo", Price = 9.99, },
+                new Item { Name = "Ketchup", Price = 9.99, },
+            };
+
+            var MenuItems2 = new List<Item>()
+            {
+                new Item { Name = "laks", Price = 79.99},
+                new Item { Name = "tun", Price = 79.23},
+                new Item { Name = "krabbe", Price = 89.99},
+                new Item { Name = "ChokoladeIs", Price = 39.99},
+                new Item { Name = "vaniljeis",Price = 39.99},
+                new Item { Name = "chokoladekage", Price = 39.99},
+                new Item { Name = "Cola", Price = 19.99},
+                new Item { Name = "Fanta", Price = 19.99},
+                new Item { Name = "Mayo", Price = 9.99},
+                new Item { Name = "Ketchup", Price = 9.99}
+            };
+
+            for (int i = 0; i < 100; i++)
+            {
+                var menulist = new List<Item>();
+
+                for (int j = 0; j < 5; j++)
+                {
+                    int index = random.Next(MenuItems1.Count);
+                    menulist.Add(MenuItems1[index]);
+                }
+
+                _ordersCollection.InsertOneAsync(new Order
+                {
+                    RestaurantId = 1,
+                    RestaurantName = "PizzaPusheren",
+                    Items = menulist,
+                    CustomerEmail = "Niels@Andersen.dk"
+                });
+            }
 
             // Insert old and new version of cars into MongoDB
             var orders = new List<BsonDocument>
@@ -73,14 +127,6 @@ namespace MongoAPI.Context
                     }
                 }
             };
-
-            var bsonCollection =
-                client.GetDatabase("MyDatabase").GetCollection<BsonDocument>("MyCollection");
-
-            bsonCollection.InsertManyAsync(orders).Wait();
-
-            Console.WriteLine("Migrate from:");
-            orders.ForEach(c => Console.WriteLine(c.ToBsonDocument() + "\n"));
         }
 
     }

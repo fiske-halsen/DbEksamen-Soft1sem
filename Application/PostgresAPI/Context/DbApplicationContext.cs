@@ -85,7 +85,6 @@ namespace PostgresAPI.Context
              new MenuItemType { Id = 4, MenuItemTypeChoice = Common.Enums.MenuItemTypeChoice.Drink }
              );
 
-
             builder.Entity<MenuItem>().HasData(
                 new MenuItem { Id = 1, Name = "salatpizza", MenuItemTypeId = 3, Price = 79.99, MenuId = 1 },
                 new MenuItem { Id = 2, Name = "Peperoni", MenuItemTypeId = 3, Price = 79.23, MenuId = 1 },
@@ -131,7 +130,6 @@ namespace PostgresAPI.Context
               new RestaurantType { Id = 17, RestaurantTypeChoice = Common.Enums.RestaurantTypeChoice.Sandwich },
               new RestaurantType { Id = 18, RestaurantTypeChoice = Common.Enums.RestaurantTypeChoice.Thai }
               );
-
 
 
             builder.Entity<Restaurant>().HasData(
