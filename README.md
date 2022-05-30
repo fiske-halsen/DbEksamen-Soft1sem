@@ -35,8 +35,8 @@ We have made a endpoint setting up test data for orders in mongoDB if needed whi
 
 *https://localhost:7236/Gateway/test-data*
 
-
-> :warning: **If you are using mobile browser**: Be very careful here!
+| WARNING: be careful to baz the quux before initializing the retro encabulator! |
+| --- |
 
 
 
