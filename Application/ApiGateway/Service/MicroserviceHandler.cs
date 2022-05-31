@@ -28,10 +28,10 @@ namespace ApiGateway.Service
     public class MicroserviceHandler : IMircoserviceHandler
     {
         private readonly ApiService _apiService;
-        private const string _POSTGRESAPI_BASE_URL_RESTAURANTS = "https://localhost:7073/api/Restaurants";
-        private const string _POSTGRESAPI_BASE_URL_USERS = "https://localhost:7073/api/Users";
-        private const string _MONGOAPI_BASE_URL = "https://localhost:7061/api/Order";
-        private const string _NEO4JAPI_BASE_URL = "https://localhost:7080/api/Recommendation";
+        private const string _POSTGRESAPI_BASE_URL_RESTAURANTS = "https://localhost:5004/api/Restaurants";
+        private const string _POSTGRESAPI_BASE_URL_USERS = "https://localhost:5004/api/Users";
+        private const string _MONGOAPI_BASE_URL = "https://localhost:5002/api/Order";
+        private const string _NEO4JAPI_BASE_URL = "https://localhost:5003/api/Recommendation";
         private readonly IConfiguration _configuration;
         private readonly HelperService _helperService;
         private readonly ApplicationCredentials _postgresClientCredentials;

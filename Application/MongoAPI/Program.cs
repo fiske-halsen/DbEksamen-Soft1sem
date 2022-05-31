@@ -39,6 +39,8 @@ var response = adminDb.RunCommand(commandDoc);
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
+
+
 var identityServer = configuration["IdentityServer:Host"];
 
 
@@ -76,6 +78,8 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 //appContext.Migration(builder.Configuration);
 
 var app = builder.Build();
+
+builder.WebHost.UseUrls("https://localhost:5002");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

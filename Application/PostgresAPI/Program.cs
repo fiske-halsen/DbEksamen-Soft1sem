@@ -105,7 +105,7 @@ builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
 
 
 var app = builder.Build();
-
+builder.WebHost.UseUrls("https://localhost:5004");
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<DbApplicationContext>();
