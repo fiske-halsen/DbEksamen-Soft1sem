@@ -25,11 +25,11 @@ The file is located in the root called *StartApplication.sh* as shown below in t
 ```
 
 > :warning: Make sure that these ports are available and docker is installed on your local machine:
-> * :5001
-> * :5002
-> * :5003
-> * :5004
-> * :5005
+> * https://localhost:5001 for Api gateway
+> * https://localhost:5002 for Mongo Api
+> * https://localhost:5003 for Neo4J Api
+> * https://localhost:5004 for Postgres Api
+> * https://localhost:5005 for Identity server
 
 
 **Step 2: Run the test data endpoint if needed**
