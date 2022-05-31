@@ -11,7 +11,7 @@
 
 ### Setup
 
-**Step 1: Run the script for starting the application NOTE: it will approximately take 2 minutes**
+**Step 1: Run the script for starting the application**
 
 The file is located in the root called *StartApplication.sh* as shown below in the directory tree:
 
@@ -24,6 +24,7 @@ The file is located in the root called *StartApplication.sh* as shown below in t
 ├── StartApplication.sh
 ```
 
+
 > :warning: Make sure that you have no instances of a postgres, mongo, redis og neo4j docker running and these ports should available and docker is installed on your local machine:
 > 
 > * https://localhost:5001 for Api gateway
@@ -32,6 +33,7 @@ The file is located in the root called *StartApplication.sh* as shown below in t
 > * https://localhost:5004 for Postgres Api
 > * https://localhost:5005 for Identity server
 
+ NOTE: it will approximately take 2 minutes
 
 **Step 2: Run the test data endpoint if needed**
 
