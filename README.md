@@ -11,7 +11,7 @@
 
 ### Setup
 
-**Step 1: Run the script running the application**
+**Step 1: Run the script for starting the application**
 
 The file is located in the root called *StartApplication.sh* as shown below in the directory tree:
 
@@ -23,6 +23,12 @@ The file is located in the root called *StartApplication.sh* as shown below in t
 ├── README.md
 ├── StartApplication.sh
 ```
+
+> :warning: **Make sure that these ports are available:
+> 5001
+>  
+>    **
+
 
 **Step 2: Run the test data endpoint if needed**
 
