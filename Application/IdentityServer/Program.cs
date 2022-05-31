@@ -34,6 +34,9 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
+builder.WebHost.UseUrls("https://localhost:5005");
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

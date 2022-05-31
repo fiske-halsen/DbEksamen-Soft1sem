@@ -46,6 +46,8 @@ builder.Services.AddScoped<IRecommendationService, RecommendationService>();
 
 var app = builder.Build();
 
+builder.WebHost.UseUrls("https://localhost:5003");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
