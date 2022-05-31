@@ -189,11 +189,6 @@ namespace PostgresAPI.Migrations
 
             migrationBuilder.Sql("CREATE OR REPLACE FUNCTION update_updatedAt_menuItem() RETURNS TRIGGER LANGUAGE PLPGSQL AS $$ BEGIN NEW.\"UpdatedAt\" = now(); RETURN NEW; END; $$");
             migrationBuilder.Sql("create or REPLACE TRIGGER updateAt_trigger before UPDATE ON public.\"MenuItems\" FOR EACH ROW EXECUTE PROCEDURE update_updatedAt_menuItem();");
-
-
-
-
-
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
