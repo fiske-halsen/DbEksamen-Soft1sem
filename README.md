@@ -24,8 +24,8 @@ The file is located in the root called *StartApplication.sh* as shown below in t
 ├── StartApplication.sh
 ```
 
-> :warning: **Make sure that these ports are available:
-> 5001
+> :warning: **Make sure that these ports are available on your local machine:
+> * 5001
 >  
 >    **
 
