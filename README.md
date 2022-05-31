@@ -11,31 +11,31 @@
 
 ### Setup
 
-**Step 1: Run the script running all the docker files**
+**Step 1: Run the script running the application**
 
-The file is located in the Docker folder called *Script.sh* as shown below in the directory tree:
+The file is located in the Docker folder called *StartApplication.sh* as shown below in the directory tree:
 
 ```
 .
 ├── Application
 ├── Docker
-│   └── Script.sh
-└── README.md
+├── React
+├── README.md
+├── StartApplication.sh
 ```
 
-**Step 2: Open the project solution containing the application in Visual Studio 2022**
-
-```
-.
-├── Application
-│   └── ProjectSolution.sln
-
-```
-**Step 3: Run the program and run the test data endpoint if needed**
+**Step 2: Run the test data endpoint if needed**
 
 We have made a endpoint setting up test data for orders in mongoDB if needed which is located at the following URI:
 
-*https://localhost:7236/Gateway/test-data*
+*https://localhost:5001/Gateway/test-data*
+
+
+
+
+
+
+
 
 
 
