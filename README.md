@@ -29,9 +29,7 @@ The file is located in the root called *StartApplication.sh* as shown below in t
 > * :5002
 > * :5003
 > * :5004
-> * :5005  
- 
-**
+> * :5005**
 
 
 **Step 2: Run the test data endpoint if needed**
