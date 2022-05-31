@@ -11,7 +11,7 @@
 
 ### Setup
 
-**Step 1: Run the script for starting the application**
+**Step 1: Run the script for starting the application NOTE: it will approximately take 2 minutes**
 
 The file is located in the root called *StartApplication.sh* as shown below in the directory tree:
 
