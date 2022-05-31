@@ -13,7 +13,7 @@
 
 **Step 1: Run the script running the application**
 
-The file is located in the Docker folder called *StartApplication.sh* as shown below in the directory tree:
+The file is located in the root called *StartApplication.sh* as shown below in the directory tree:
 
 ```
 .
