@@ -32,7 +32,7 @@ The file is located in the project root called *StartApplication.sh* as shown be
 > * https://localhost:5004 for Postgres Api
 > * https://localhost:5005 for Identity server
 
- NOTE: it will approximately take 2 minutes
+ NOTE: The execution of the script will approximately take 2 minutes
 
 **Step 2: Run the test data endpoint if needed**
 
