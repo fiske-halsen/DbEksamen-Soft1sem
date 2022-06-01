@@ -24,7 +24,7 @@ The file is located in the root called *StartApplication.sh* as shown below in t
 ```
 
 
-> :warning: Make sure that you have no instances of a postgres, mongo, redis og neo4j docker running and these ports should available and docker is installed on your local machine:
+> :warning: Make sure that you have no instances of a postgres, mongo, redis og neo4j docker running and these ports should available and docker should be installed on your local machine:
 > 
 > * https://localhost:5001 for Api gateway
 > * https://localhost:5002 for Mongo Api
