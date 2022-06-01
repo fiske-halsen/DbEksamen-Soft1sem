@@ -16,7 +16,7 @@
 The file is located in the root called *StartApplication.sh* as shown below in the directory tree:
 
 ```
-.
+
 ├── Application
 ├── Docker
 ├── React
